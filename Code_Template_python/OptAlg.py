@@ -35,19 +35,19 @@ def opt_alg(x0: np.ndarray, obj, options: dict) -> tuple[np.ndarray, str]:
     iter_counter = 0
 
     # Evaluate the objective, gradient, and Hessian
-    obj0 = obj.func(x0)
-    grad0 = obj.grad(x0)
-    hess0 = obj.hess(x0)
+    obj0 = obj['func'](x0)
+    grad0 = obj['grad'](x0)
+    hess0 = obj['hess'](x0)
 
     # Print headline — this is one example how you can use the options
     method = options['method']
-    if method == 'steepest descent':
+    if method == 'steepest_descent':
         # Steepest Descent
         print("\nRunning Steepest Descent Method\n")
-    elif method == 'Newton':
+    elif method == 'newton':
         # Newton's Method
         print("\nRunning Newton's Method\n")
-    elif method == 'modified Newton':
+    elif method == 'modified_newton':
         # Modified Newton's Method
         print("\nRunning Newton's Method\n")
     else:
