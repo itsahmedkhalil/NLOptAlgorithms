@@ -93,28 +93,35 @@ class DataFit:
     def __init__(self, y: np.ndarray = np.array([1.5, 2.25, 2.625])):
         self.y = y
     
-    def function(self, x: np.ndarray) -> float:
+    def function(self, x):
+        y = self.y
+        return (y[0] - x[0] + x[0] * x[1])**2 + (y[1] - x[0] + x[0] * x[1]**2)**2 + (y[2] - x[0] + x[0] * x[1]**3)**2
+
+    def gradient(self, x):
+        y = self.y
+        df_dx = (2 * (y[0] - x[0] + x[0] * x[1]) * (-1 + x[1]) + 
+                2 * (y[1] - x[0] + x[0] * x[1]**2) * (-1 + x[1]**2) + 
+                2 * (y[2] - x[0] + x[0] * x[1]**3) * (-1 + x[1]**3))
+
+        df_dy = (2 * (y[0] - x[0] + x[0] * x[1]) * x[0] + 
+                2 * (y[1] - x[0] + x[0] * x[1]**2) * (2 * x[0] * x[1]) + 
+                2 * (y[2] - x[0] + x[0] * x[1]**3) * (3 * x[0] * x[1]**2))
+
+        return np.array([df_dx, df_dy])
+
+    def hessian(self, x):
         x1, x2 = x
-        i = np.arange(1, 4)
-        return np.sum((self.y - x1 * (1 - x2**i))**2)
-    
-    def gradient(self, x: np.ndarray) -> np.ndarray:
-        x1, x2 = x
-        i = np.arange(1, 4)
-        grad = np.zeros_like(x)
-        grad[0] = -2 * np.sum((1 - x2**i) * (self.y - x1 * (1 - x2**i)))
-        grad[1] = 2 * np.sum(i * x1 * x2**(i - 1) * (self.y - x1 * (1 - x2**i)))
-        return grad
-    
-    def hessian(self, x: np.ndarray) -> np.ndarray:
-        x1, x2 = x
-        i = np.arange(1, 4)
-        H = np.zeros((2, 2))
-        H[0, 0] = 2 * np.sum((1 - x2**i)**2)
-        H[0, 1] = 2 * np.sum(i * x2**(i - 1) * (self.y - x1 * (1 - x2**i) - x1 * (1 - x2**i)))
-        H[1, 0] = H[0, 1]
-        H[1, 1] = 2 * np.sum(x1 * i * (i - 1) * x2**(i-2) * (self.y - x1 * (1 - x2**i)) + x1**2 * i**2 * x2**(2*i - 2))
+
+        H11 = 2 * x2**6 + 2 * x2**4 - 4 * x2**3 - 2 * x2**2 - 4 * x2 + 6
+        H12 = 12 * x1 * x2**5 + 8 * x1 * x2**3 - 12 * x1 * x2**2 - 4 * x1 * x2 - 4 * x1 + 15.75 * x2**2 + 9 * x2 + 3
+        H21 = H12 
+        H22 = 30 * x1**2 * x2**4 + 12 * x1**2 * x2**2 - 12 * x1**2 * x2 - 2 * x1**2 + 31.5 * x1 * x2 + 9 * x1
+
+        H = np.array([[H11, H12],
+                    [H21, H22]])
+
         return H
+
     
 
 class Exponential:
@@ -139,6 +146,7 @@ class Exponential:
     
     def hessian(self, x: np.ndarray) -> np.ndarray:
         H = np.zeros((self.n, self.n))
+        
         H[0, 0] = 2 * np.exp(x[0]) * (1 - np.exp(x[0])) / (np.exp(x[0]) + 1)**3 + 0.1 * np.exp(-x[0])
 
         for i in range(1, self.n):

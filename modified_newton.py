@@ -41,12 +41,12 @@ def modified_newton(x0, problem, options, search):
 
         while True:
             try:
-                np.linalg.cholesky(hess_k + delta_k * np.eye(len(x)))
+                np.linalg.cholesky(hess_k + delta_k * np.eye(hess_k.shape[0]))
                 break
             except:
                 delta_k = max(2 * delta_k, options['beta'])
 
-        p_k = -np.linalg.solve(hess_k + delta_k * np.eye(len(x)), grad_k)
+        p_k = -np.linalg.solve(hess_k + delta_k * np.eye(hess_k.shape[0]), grad_k)
 
         alpha_k = search(x, problem, options)
         x = x + alpha_k * p_k

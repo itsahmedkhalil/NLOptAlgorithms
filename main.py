@@ -22,7 +22,7 @@ epsilon_min = 10e-8
 tol = 10e-8
 eta = 0.01
 tau = 0.5
-beta = 1e-4
+beta = 10e-4
 
 options = initialize(c1, c2, max_iter, epsilon_min, tol, eta, tau, beta) 
 
