@@ -176,10 +176,11 @@ results = {
 
 for i in range(1, len(results.values())+1):
     
-    # Get the problem and initial point
     if i == 3 or i == 4:
-        # Skip problem 4 for now
+        # Skip problems 3 and 4 for now
         continue
+
+    # Get the problem and initial point
     problemi = results[f'problem{i}']['problem']
     print("iteration", i)
     x0 = results[f'problem{i}']['x0']
