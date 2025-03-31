@@ -42,7 +42,6 @@ def wolfe_line_search(x, problem, options):
     alpha = 1.0
     alpha_l = 0
     alpha_u = np.inf
-    f_val = problem.function(x)
     p_k = -problem.gradient(x)
 
     while True:
