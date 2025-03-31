@@ -26,12 +26,12 @@ def gradient_descent(x0, problem, options, search):
         p_k = -problem.gradient(x)
         grad_norm_hist.append(np.linalg.norm(p_k))
         
-        alpha = search(x, problem, options)
-        x = x + alpha * p_k
-
         # Check convergence
         if np.linalg.norm(p_k) < options['tol'] * max(np.linalg.norm(grad_0), 1):
             output = "Converged. Gradient norm is below tolerance."
             break
+
+        alpha = search(x, problem, options)
+        x = x + alpha * p_k
 
     return x, problem.function(x), itr, time.time() - time_start, output, grad_norm_hist

@@ -4,6 +4,8 @@ np.random.seed(0)
 from functions import *
 from params import initialize
 from gradient_descent import gradient_descent
+from modified_newton import modified_newton
+from bfgs import bfgs
 from search_methods import armijo_line_search, wolfe_line_search
 
 
@@ -74,7 +76,49 @@ for i in range(1, len(results.values())+1):
         # 'h': h_gdW
     }
 
+    # Run modified Newton with Armijo line search
+    x_mn, f_mn, i_mn, t_mn, o_mn, h_mn = modified_newton(x0, problem1, options, armijo_line_search)
+    results[f'problem{i}']['mn'] = {
+        'x': x_mn,
+        'f': f_mn,
+        'i': i_mn,
+        't': t_mn,
+        'o': o_mn,
+        # 'h': h_mn
+    }
 
+    # Run modified Newton with Wolfe line search
+    x_mnW, f_mnW, i_mnW, t_mnW, o_mnW, h_mnW = modified_newton(x0, problem1, options, wolfe_line_search)
+    results[f'problem{i}']['mnW'] = {
+        'x': x_mnW,
+        'f': f_mnW,
+        'i': i_mnW,
+        't': t_mnW,
+        'o': o_mnW,
+        # 'h': h_mnW
+    }
+
+    # Run BFGS with Armijo line search
+    x_bfgs, f_bfgs, i_bfgs, t_bfgs, o_bfgs, h_bfgs = bfgs(x0, problem1, options, armijo_line_search)
+    results[f'problem{i}']['bfgs'] = {
+        'x': x_bfgs,
+        'f': f_bfgs,
+        'i': i_bfgs,
+        't': t_bfgs,
+        'o': o_bfgs,
+        # 'h': h_bfgs
+    }
+
+    # Run BFGS with Wolfe line search
+    x_bfgsW, f_bfgsW, i_bfgsW, t_bfgsW, o_bfgsW, h_bfgsW = bfgs(x0, problem1, options, wolfe_line_search)
+    results[f'problem{i}']['bfgsW'] = {
+        'x': x_bfgsW,
+        'f': f_bfgsW,
+        'i': i_bfgsW,
+        't': t_bfgsW,
+        'o': o_bfgsW,
+        # 'h': h_bfgsW
+    }
 
 # Print results
 print("Results", results)
