@@ -18,4 +18,6 @@ def initialize(c1, c2, max_iter, epsilon_min, tol, eta, tau, beta) -> dict:
     options['tol'] = tol
     options['eta'] = eta
     options['tau'] = tau
+    options['beta'] = beta
+    
     return options

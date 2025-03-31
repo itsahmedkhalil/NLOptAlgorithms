@@ -32,6 +32,7 @@ class Quartic:
         return x + self.sigma * (x.T @ self.Q @ x) * (self.Q @ x)
     
     def hessian(self, x: np.ndarray) -> np.ndarray:
+        x = x.reshape(-1, 1)
         return self.I + self.sigma * (2 * self.Q @ x @ x.T + x.T @ self.Q @ x) @ self.Q
     
 
