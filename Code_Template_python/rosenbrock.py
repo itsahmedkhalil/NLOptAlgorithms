@@ -33,7 +33,7 @@ def rosenbrock_grad(x: np.ndarray) -> np.ndarray:
     n=len(x)
     ### You need to implement this! 
     ### Compute the analytical gradient and implement the formula.
-    grad=np.zeros(n,1)
+    grad=np.zeros((n,1))
     return grad
 
 
@@ -56,5 +56,5 @@ def rosenbrock_hessian(x: np.ndarray) -> np.ndarray:
     ### You need to implement this!
     ### Compute the analytical Hessian and implement the formula.
     
-    H = np.zeros(n,n); ### % This is wrong!
+    H = np.zeros((n,n)); ### % This is wrong!
     return H

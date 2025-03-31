@@ -31,7 +31,8 @@ for j in range(len(methods_list)):
     # Set other options (use a meaningful name as in algorithm description)
     options['rho'] = 0.5  # example value
 
-    # Define the objective structure
+    # Characterize the function we want to optimize
+    # You can create separate files or wrap them into a class
     obj = {
         'func': rosenbrock_func,
         'grad': rosenbrock_grad,
