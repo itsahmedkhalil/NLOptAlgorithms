@@ -13,8 +13,17 @@ def armijo_backtracking(xk: np.ndarray,
 
     This function computes the steplength parameter alpha 
 
+    Parameters:
+    - xk: current point at time step k
+    - fk: value of f(xk)
+    - gradk: value of gradient of f(xk)
+    - pk: search direction
+    - alpha_init: initial step size
+    - obj_func: objective function used to compute f(xk+1)
+    - options: dictionary with the defined parameters for the problem
+
     Returns:
-    - alpha: Step length satisfying Armijo condition (as a numpy array)
+    - alpha: Step length satisfying Armijo condition
     """
 
     ### This is just a reference file
