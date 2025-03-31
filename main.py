@@ -6,6 +6,7 @@ from params import initialize
 from gradient_descent import gradient_descent
 from modified_newton import modified_newton
 from bfgs import bfgs
+from dfp import dfp
 from search_methods import armijo_line_search, wolfe_line_search
 
 # Set from radians to degrees
@@ -252,6 +253,30 @@ for i in range(1, len(results.values())+1):
         'o': o_bfgsW,
         # 'h': h_bfgsW
     }
+
+
+     # Run DFP with Armijo line search
+    x_dfp, f_dfp, i_dfp, t_dfp, o_dfp, h_dfp = dfp(x0, problemi, options, armijo_line_search)
+    results[f'problem{i}']['dfp'] = {
+        'x': x_dfp,
+        'f': f_dfp,
+        'i': i_dfp,
+        't': t_dfp,
+        'o': o_dfp,
+        # 'h': h_bfgsW
+    }
+
+     # Run DFP with Wolfe line search
+    x_dfpW, f_dfpW, i_dfpW, t_dfpW, o_dfpW, h_dfpW = dfp(x0, problemi, options, wolfe_line_search)
+    results[f'problem{i}']['dfpW'] = {
+        'x': x_dfpW,
+        'f': f_dfpW,
+        'i': i_dfpW,
+        't': t_dfpW,
+        'o': o_dfpW,
+        # 'h': h_bfgsW
+    }
+
 
 # Print results
 print("Results", results)
