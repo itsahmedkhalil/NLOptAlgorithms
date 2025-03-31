@@ -17,7 +17,7 @@ def cosd(degrees):
 # Set parameters
 c1 = 10**-4
 c2 = 0.9
-max_iter = 10000
+max_iter = 100
 epsilon_min = 10e-8
 tol = 10e-8
 eta = 0.01
@@ -154,32 +154,33 @@ results = {
                     'x0': x0_p2},
     'problem3': {'problem': problem3,
                     'x0': x0_p3},
-    # 'problem4': {'problem': problem4,
-    #                 'x0': x0_p4},
-    # 'problem5': {'problem': problem5,
-    #                 'x0': x0_p5},
-    # 'problem6': {'problem': problem6,
-    #                 'x0': x0_p6},
-    # 'problem7': {'problem': problem7,
-    #                 'x0': x0_p7},
-    # 'problem8': {'problem': problem8,
-    #                 'x0': x0_p8},
-    # 'problem9': {'problem': problem9,
-    #                 'x0': x0_p9},
-    # 'problem10': {'problem': problem10,
-    #                 'x0': x0_p10},
-    # 'problem11': {'problem': problem11,
-    #                 'x0': x0_p11},
-    # 'problem12': {'problem': problem12,
-    #                 'x0': x0_p12}
+    'problem4': {'problem': problem4,
+                    'x0': x0_p4},
+    'problem5': {'problem': problem5,
+                    'x0': x0_p5},
+    'problem6': {'problem': problem6,
+                    'x0': x0_p6},
+    'problem7': {'problem': problem7,
+                    'x0': x0_p7},
+    'problem8': {'problem': problem8,
+                    'x0': x0_p8},
+    'problem9': {'problem': problem9,
+                    'x0': x0_p9},
+    'problem10': {'problem': problem10,
+                    'x0': x0_p10},
+    'problem11': {'problem': problem11,
+                    'x0': x0_p11},
+    'problem12': {'problem': problem12,
+                    'x0': x0_p12}
 }
 
 for i in range(1, len(results.values())+1):
     
-    # Get the problem and initial point
     if i == 3 or i == 4:
-        # Skip problem 4 for now
+        # Skip problems 3 and 4 for now
         continue
+
+    # Get the problem and initial point
     problemi = results[f'problem{i}']['problem']
     print("iteration", i)
     x0 = results[f'problem{i}']['x0']
