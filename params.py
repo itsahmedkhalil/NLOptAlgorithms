@@ -1,6 +1,6 @@
 import numpy as np
 
-def initialize(c1, c2, max_iter, epsilon_min, tol, eta, tau, beta) -> dict:
+def initialize() -> dict:
 
     """This function sets some default values for parameters 
      used in the algorithm 
@@ -10,14 +10,14 @@ def initialize(c1, c2, max_iter, epsilon_min, tol, eta, tau, beta) -> dict:
      """
 
     options = {}
-
-    options['c1'] = c1
-    options['c2'] = c2
-    options['max_iter'] = max_iter
-    options['epsilon_min'] = epsilon_min
-    options['tol'] = tol
-    options['eta'] = eta
-    options['tau'] = tau
-    options['beta'] = beta
+    # Set parameters
+    options['c1'] = 10**-4
+    options['c2'] = 0.9
+    options['max_iter'] = 100
+    options['epsilon_min'] = 10e-8
+    options['tol'] = 10e-8
+    options['eta'] = 0.01
+    options['tau'] = 0.5
+    options['beta'] = 10e-4
     
     return options
