@@ -27,8 +27,8 @@ def modified_newton(x0, problem, options, search):
     grad_norm_hist = np.zeros(max_iters)   # values of norm(\nablaf(xk))(1, max_iters)
     x_hist = np.zeros((len(x0), max_iters))   # (n, max_iters)
     alpha_hist = np.zeros(max_iters)  # (1, max_iters)
-    s = []               # (BFGS, L-BFGS)
-    y = []               # (BFGS. L-BFGS)
+    s = []               # (L-BFGS)
+    y = []               # (L-BFGS)
 
     x = x0.copy()
 

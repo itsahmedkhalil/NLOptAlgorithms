@@ -36,13 +36,12 @@ def bfgs(x0, problem, options, search):
     grad_0_norm = np.linalg.norm(problem.gradient(x))
     output = "Failed. Maximum iterations reached."     
     
-    H_k = np.eye(len(x))
+    hessian_k = np.eye(len(x))
 
     for itr in range(options['max_iter']):
         # Compute values at step itr (k)
         fx_k  = problem.function(x)
         grad_k = problem.gradient(x)
-        hessian_k = problem.hessian(x)
 
         # Store values
         fx[itr] = fx_k
