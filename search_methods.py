@@ -1,11 +1,16 @@
 import numpy as np
+from typing import Callable
 
-def armijo_line_search(x, problem, options):
+def armijo_line_search(xk: np.ndarray,
+                       problem,
+                       pk: np.ndarray,
+                       options: dict) -> float:
     """Armijo line search algorithm.
     
     Parameters:
-    - x: Current point.
-    - problem: Problem object with function, gradient, and hessian methods.
+    - xk: Current point at time step k. (n,1)
+    - problem: problem object with function, gradient, and Hessian.
+    - pk: Current search direction (n,1)
     - options: Dictionary with algorithm parameters.
     
     Returns:
@@ -13,54 +18,66 @@ def armijo_line_search(x, problem, options):
     """
     
     alpha = 1.0
-    f_val = problem.function(x)
-    grad = problem.gradient(x)
+
+    # Get line search parameters
+    c1  = options['c1']
+    tau = options['tau']
+
+    # Define just for readability
+    f = problem.function
+    fk = f(xk)
+    grad_k = problem.gradient(xk)
     
-    while True:
-        new_x = x - alpha * grad
-        new_f_val = problem.function(new_x)
-        
-        if new_f_val <= f_val + options['c1'] * alpha * np.dot(grad, grad):
-            break
-        
-        alpha *= options['tau']
+    while f(xk + alpha * pk) > fk + c1 * alpha * grad_k.T @ pk:
+        alpha *= tau
     
     return alpha
 
-def wolfe_line_search(x, problem, options):
+def wolfe_line_search(xk: np.ndarray,
+                       problem,
+                       pk: np.ndarray,
+                       options: dict) -> float:
     """Wolfe line search algorithm.
     
     Parameters:
-    - x: Current point.
-    - problem: Problem object with function, gradient, and hessian methods.
+    - xk: Current point at time step k. (n,1)
+    - problem: problem object with function, gradient, and Hessian.
+    - pk: Current search direction (n,1)
     - options: Dictionary with algorithm parameters.
     
     Returns:
     - alpha: Step size.
     """
     
+    # Initialize alpha and its bounds
     alpha = 1.0
     alpha_l = 0
     alpha_u = np.inf
-    p_k = -problem.gradient(x)
+    
+    # Get line search parameters
+    c1 = options['c1']
+    c2 = options['c2']
 
+    # Define just for readability
+    f = problem.function
+    grad_f = problem.gradient
+
+    # Define phi(alpha) and its directional derivative phi'(alpha)
+    phi = lambda alp: f(xk + alp * pk) 
+    phi_prime = lambda alp: grad_f(xk + alp * pk).T  @ pk
+    
     while True:
-        phi_alpha = problem.function(x + alpha * p_k)
-        phi_0 = problem.function(x)
-        phi_prime_0 = np.dot(problem.gradient(x), p_k)
 
-        if phi_alpha > phi_0 + options['c1'] * alpha * phi_prime_0:
+        if phi(alpha) > phi(0) + c1 * alpha * phi_prime(0):
             alpha_u = alpha
         else:
-            phi_prime_alpha = np.dot(problem.gradient(x + alpha * p_k), p_k)
-            if phi_prime_alpha < options['c2'] * phi_prime_0:
+            if phi_prime(alpha) < c2 * phi_prime(0):
                 alpha_l = alpha
             else:
-                break
+                return alpha
 
         if alpha_u < np.inf:
             alpha = (alpha_l + alpha_u) / 2
         else:
             alpha *= 2
-
-    return alpha
+    

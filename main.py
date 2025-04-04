@@ -1,30 +1,19 @@
 import numpy as np
-np.random.seed(0)
 
+from bfgs import bfgs
 from functions import *
-from params import initialize
 from gradient_descent import gradient_descent
 from modified_newton import modified_newton
-from bfgs import bfgs
+from params import initialize
 from search_methods import armijo_line_search, wolfe_line_search
+from utils import sind, cosd
 
-# Set from radians to degrees
-def sind(degrees):
-    return np.sin(np.deg2rad(degrees))
-def cosd(degrees):
-    return np.cos(np.deg2rad(degrees))
 
-# Set parameters
-c1 = 10**-4
-c2 = 0.9
-max_iter = 100
-epsilon_min = 10e-8
-tol = 10e-8
-eta = 0.01
-tau = 0.5
-beta = 10e-4
+# Initialize parameters
+options = initialize() 
 
-options = initialize(c1, c2, max_iter, epsilon_min, tol, eta, tau, beta) 
+# Initialize random seed
+np.random.seed(0)
 
 # Setup Problem 1
 # Randomly generated convex quadratic function 
@@ -182,7 +171,7 @@ for i in range(1, len(results.values())+1):
 
     # Get the problem and initial point
     problemi = results[f'problem{i}']['problem']
-    print("iteration", i)
+    # print("iteration", i)
     x0 = results[f'problem{i}']['x0']
 
     # Run gradient descent with Armijo line search
@@ -254,7 +243,7 @@ for i in range(1, len(results.values())+1):
     }
 
 # Print results
-print("Results", results)
+# print("Results", results)
 
 
 
