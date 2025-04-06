@@ -11,7 +11,7 @@ from gradient_descent import gradient_descent
 from modified_newton import modified_newton
 from lbfgs import lbfgs
 
-prob = 'Problem1'
+prob = 'Problem2'
 
 # Initialize parameters
 options = initialize() 
@@ -19,12 +19,12 @@ options = initialize()
 # Initialize random seed
 np.random.seed(0)
 
-# Setup Problem 1
-# Randomly generated convex quadratic function 
-# n = 10, kappa = 10
+# Setup Problem 2
+# Randomly generated convex quadratic function
+# n = 10, kappa = 1000
 # Starting point x0 = 20 * np.random.rand(n) - 10
 n = 10
-kappa = 10
+kappa = 1000
 Q = np.random.rand(n, n)
 Q = Q.T @ Q
 Q = kappa * Q / np.linalg.norm(Q, ord=2)
