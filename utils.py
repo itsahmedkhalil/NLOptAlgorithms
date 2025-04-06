@@ -22,18 +22,22 @@ def plot_gradient_norm(results, problem_name):
     """
 
     # Find the largest number of iterations excluding gradient descent
-    max_iters = 0
+    max_iters_all = 0
+    max_iters_exc_gd = 0
     for name, result in results.items():
         if 'Gradient Descent' not in name:
-            max_iters = max(max_iters, result['i'])
+            max_iters_exc_gd = max(max_iters_exc_gd, result['i'])
+
+        max_iters_all = max(max_iters_all, result['i'])
 
     # Make two plots: one with the full number of iterations and one with the largest number of iterations excluding gradient descent
-    zoom_iterations = max(max_iters, 25)
+    zoom_iterations = max(max_iters_exc_gd, 10)
+    max_iters_all = max(max_iters_all, 10)
 
     plt.figure(figsize=(20, 10))
     plt.subplot(1, 2, 1)
     for name, result in results.items():
-        plt.plot(result['h'], label=name, alpha=0.7)
+        plt.plot(result['h'][:max_iters_all], label=name, alpha=0.7)
     plt.yscale('log')
     plt.xlabel('Iterations')
     plt.ylabel(r'Gradient Norm, $\|\nabla f(x_k)\|$')

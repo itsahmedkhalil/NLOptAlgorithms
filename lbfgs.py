@@ -87,7 +87,7 @@ def lbfgs(x0, problem, options, search):
             s.append(s_k)
             y.append(y_k)
 
-        gamma_k = (s_k @ y_k) / (y_k @ y_k)
+        gamma_k = (s_k @ y_k) / (y_k @ y_k) if y_k @ y_k > 1e-15 else 1.0
 
     return x, problem.function(x), itr, time.time() - time_start, output, grad_norm_hist
 
