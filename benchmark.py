@@ -1,6 +1,4 @@
-import numpy as np
 from search_methods import armijo_line_search, wolfe_line_search
-
 
 def benchmark_algorithms(algorithms, problem, x0, options):
 
@@ -28,7 +26,7 @@ def benchmark_algorithms(algorithms, problem, x0, options):
             'i': i,
             't': t,
             'o': o,
-            # 'h': h
+            'h': h
         }
 
         print(f"Running {name} with Wolfe.\n")
@@ -39,7 +37,7 @@ def benchmark_algorithms(algorithms, problem, x0, options):
             'i': i,
             't': t,
             'o': o,
-            # 'h': h
+            'h': h
         }
 
     return results
