@@ -4,7 +4,7 @@ import pandas as pd
 from functions import Quadratic
 from params import initialize
 from benchmark import benchmark_algorithms
-from utils import plot_gradient_norm
+from utils import plot_gradient_norm, Q_generate
 
 from bfgs import bfgs
 from gradient_descent import gradient_descent
@@ -25,9 +25,7 @@ np.random.seed(0)
 # Starting point x0 = 20 * np.random.rand(n) - 10
 n = 10
 kappa = 1000
-Q = np.random.rand(n, n)
-Q = Q.T @ Q
-Q = kappa * Q / np.linalg.norm(Q, ord=2)
+Q = Q_generate(n, kappa)
 q = np.random.rand(n)
 x0 = 20 * np.random.rand(n) - 10
 problem = Quadratic(Q, q)

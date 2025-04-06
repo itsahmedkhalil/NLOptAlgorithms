@@ -10,6 +10,14 @@ def sind(degrees):
 def cosd(degrees):
     return np.cos(np.deg2rad(degrees))
 
+def Q_generate(n: int, k: float):
+    eigenvalues = np.linspace(1, k, n)
+    Q = np.random.randn(n, n) 
+    Q, _ = np.linalg.qr(Q) # QR Decomposition, Q is orthogonal
+    Q = Q @ np.diag(eigenvalues) @ Q.T
+    return Q
+
+
 # Plot the gradient norm history
 def plot_gradient_norm(results, problem_name):
     """

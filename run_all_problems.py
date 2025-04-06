@@ -1,4 +1,3 @@
-import os
 import subprocess
 import sys
 
@@ -6,16 +5,16 @@ import sys
 problem_scripts = [
     'problem1.py',
     'problem2.py',
-    # 'problem3.py',
-    # 'problem4.py',
-    'problem5.py',
-    'problem6.py',
-    'problem7.py',
-    'problem8.py',
-    'problem9.py',
-    'problem10.py',
-    'problem11.py',
-    'problem12.py'
+    'problem3.py',
+    'problem4.py',
+    # 'problem5.py',
+    # 'problem6.py',
+    # 'problem7.py',
+    # 'problem8.py',
+    # 'problem9.py',
+    # 'problem10.py',
+    # 'problem11.py',
+    # 'problem12.py'
 ]
 
 
