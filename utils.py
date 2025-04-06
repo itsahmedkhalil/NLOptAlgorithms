@@ -13,12 +13,11 @@ def cosd(degrees):
 # Plot the gradient norm history
 def plot_gradient_norm(results, problem_name):
     """
-    Plot the gradient norm history for a given algorithm.
+    Plot the gradient norm history for all algorithms.
 
     Parameters:
-    - grad_norm_hist: Gradient norm history.
-    - algorithm_name: Name of the algorithm.
-    - title: Title for the plot.
+    - results: Dictionary containing the results of each algorithm.
+    - problem_name: Problem number.
     """
 
     # Find the largest number of iterations excluding gradient descent
