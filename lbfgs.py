@@ -22,9 +22,9 @@ def lbfgs(x0, problem, options, search):
     max_iters = options['max_iter']
     tol = options['tol']
     eps = options['epsilon_min']
-    m = options['m']  # Number of corrections to use in L-BFGS
-    gamma_k = options['gamma']  # Scaling factor for the Hessian approximation
+    gamma_k = options['gamma_init']
 
+    m = min(options['m'], len(x0)) 
 
     # Initialize numpy arrays to store values
     fx = np.zeros(max_iters)              # values of f(xk)       (1, max_iters)
@@ -33,14 +33,14 @@ def lbfgs(x0, problem, options, search):
     x_hist = np.zeros((len(x0), max_iters))   # (n, max_iters)
     alpha_hist = np.zeros(max_iters)  # (1, max_iters)
     
-    s = []               # (L-BFGS)
-    y = []               # (L-BFGS)
+    s = []
+    y = []
 
     x = x0.copy()
 
     grad_0_norm = np.linalg.norm(problem.gradient(x))
     output = "Failed. Maximum iterations reached."
-    hessian_k = np.eye(len(x))
+    hessian_0 = np.eye(len(x))
 
     for itr in range(max_iters):
         # Compute values at step itr (k)
@@ -58,6 +58,9 @@ def lbfgs(x0, problem, options, search):
 
         ## 1. Compute search direction. The hessian at time step k.
         ## Note: On newton method approximations -> hessiank NOT problem.hessian(x)
+
+        hessian_k = gamma_k * hessian_0
+
         p_k = -two_loop_recursion(hessian_k, grad_k, s, y)
 
         # Check convergence
@@ -84,15 +87,21 @@ def lbfgs(x0, problem, options, search):
             s.append(s_k)
             y.append(y_k)
 
+        gamma_k = (s_k @ y_k) / (y_k @ y_k) #if y_k @ y_k > 1e-15 else 1.0
+
+        print(f"Iteration {itr+1}/{max_iters}: f(x) = {fx_k}, ||grad|| = {grad_k_norm}, alpha = {alpha_k}, gamma = {gamma_k}")
+
+    return x, problem.function(x), itr, time.time() - time_start, output, grad_norm_hist
+
 def two_loop_recursion(H0_k, gradk, sks, yks):
 
     q = gradk.copy()
     m = len(sks)
-    p_l = np.zeros((1, m))
-    alpha = np.zeros((1, m))
+    p_l = np.zeros(m)
+    alpha = np.zeros(m)
 
     for l in range(m-1, -1, -1):
-        p_l[l] = 1/yks[l].T @ sks[l]
+        p_l[l] = 1/(yks[l].T @ sks[l])
         alpha[l] = p_l[l] * (sks[l].T @ q)
         q -= alpha[l] * yks[l]
 

@@ -19,5 +19,7 @@ def initialize() -> dict:
     options['eta'] = 0.01
     options['tau'] = 0.5
     options['beta'] = 10e-4
+    options['gamma_init'] = 1
+    options['m'] = 10
     
     return options

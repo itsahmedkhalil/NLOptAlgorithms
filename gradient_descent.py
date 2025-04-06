@@ -1,6 +1,5 @@
 import numpy as np
 import time
-import ipdb
 
 def gradient_descent(x0, problem, options, search):
     """Gradient descent algorithm with line search.
