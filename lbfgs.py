@@ -89,7 +89,7 @@ def lbfgs(x0, problem, options, search):
 
         gamma_k = (s_k @ y_k) / (y_k @ y_k) if y_k @ y_k > 1e-15 else 1.0
 
-    return x, problem.function(x), itr, time.time() - time_start, output, grad_norm_hist
+    return x_hist, fx, itr, time.time() - time_start, output, grad_norm_hist
 
 def two_loop_recursion(H0_k, gradk, sks, yks):
 

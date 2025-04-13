@@ -66,3 +66,65 @@ def plot_gradient_norm(results, problem_name):
     plt.savefig(f'figures/{problem_name}_grad_norm.png')
     plt.show()
     
+    # Plot the gradient norm history
+def plot_function_value(results, problem_name):
+    """
+    Plot the function value history for all algorithms.
+
+    Parameters:
+    - results: Dictionary containing the results of each algorithm.
+    - problem_name: Problem number.
+    """
+
+    # Find the largest number of iterations excluding gradient descent
+    max_iters_all = 0
+    max_iters_exc_gd = 0
+    for name, result in results.items():
+        if 'Gradient Descent' not in name:
+            max_iters_exc_gd = max(max_iters_exc_gd, result['i'])
+
+        max_iters_all = max(max_iters_all, result['i'])
+
+    # Make two plots: one with the full number of iterations and one with the largest number of iterations excluding gradient descent
+    zoom_iterations = max(max_iters_exc_gd, 10)
+    max_iters_all = max(max_iters_all, 10)
+
+    plt.figure(figsize=(20, 10))
+    plt.subplot(1, 2, 1)
+    k = 0
+    for name, result in results.items():
+        if k >= 2:
+            continue
+        iters = min(result['i'], max_iters_all)
+        x_vals = np.arange(iters+1)
+        y_vals = result['f'][:iters+1]
+
+        plt.plot(x_vals, y_vals, label=name, alpha=0.7, linewidth=2)
+        k += 1
+    plt.yscale('log')
+    plt.xlabel('Iterations')
+    plt.ylabel(r'Function value, $f(x_k)$')
+    plt.title(f'Function value History for {problem_name}')
+    plt.legend(loc='lower right')
+    plt.grid()
+    
+    plt.subplot(1, 2, 2)
+    k = 0
+    for name, result in results.items():
+        if k >= 2:
+             continue
+        zoom_iters = min(result['i'], zoom_iterations)
+        x_vals = np.arange(zoom_iters+1)
+        y_vals = result['f'][:zoom_iters+1]
+        plt.plot(x_vals, y_vals, label=name, alpha=0.7, linewidth=2)
+        k += 1
+    plt.yscale('log')
+    plt.xlabel('Iterations')
+    plt.ylabel(r'Function value, $f(x_k)$')
+    plt.title(f'Function value History for {problem_name}, First {zoom_iterations} Iterations')
+    plt.legend(loc='lower right')
+    plt.grid()
+    
+    plt.tight_layout()
+    plt.savefig(f'figures/{problem_name}_function_value.png')
+    plt.show()
