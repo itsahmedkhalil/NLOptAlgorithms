@@ -4,7 +4,7 @@ import pandas as pd
 from functions import RosenbrockND
 from params import initialize
 from benchmark import benchmark_algorithms
-from utils import plot_gradient_norm
+from utils import plot_gradient_norm, plot_function_value
 
 from bfgs import bfgs
 from gradient_descent import gradient_descent
@@ -44,4 +44,8 @@ df.to_csv(f'data/{prob}.csv', index=False)
 
 # Plot gradient norm history
 plot_gradient_norm(results, prob)
+
+# Plot function value history to prove function value's sufficient 
+# decrease condition
+plot_function_value(results,prob)
 

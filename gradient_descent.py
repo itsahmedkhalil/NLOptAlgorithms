@@ -69,7 +69,7 @@ def gradient_descent(x0, problem, options, search):
         print(f"{'iter':>6} {'f':>9} {'||grad||':>9} {'alpha':>9}")
         print(f"{itr:6d} {fx_k:9.2e} {grad_k_norm:9.2e} {alpha_k:9.2e}")
     print(output)
-    return x, problem.function(x), itr, time.time() - time_start, output, grad_norm_hist
+    return x_hist, fx, itr, time.time() - time_start, output, grad_norm_hist
 
 def get_search_direction(grad_k: np.ndarray, H_k: np.ndarray, options: dict)-> np.ndarray:
     """ This function computes the search direction according to the algorithm of choice
