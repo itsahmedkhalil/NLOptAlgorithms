@@ -1,8 +1,8 @@
 import numpy as np
 import time
 
-def lbfgs(x0, problem, options, search):
-    """ L-BFGS algorithm with line search.
+def newton_cg(x0, problem, options, search):
+    """Gradient descent algorithm with line search.
     
     Parameters:
     - x0: Initial point.
@@ -14,17 +14,13 @@ def lbfgs(x0, problem, options, search):
     - x: Solution.
     - f_val: Function value at the solution.
     """
-
-    print("Running L-BFGS.\n")
+    print("Running gradient descent.\n")
     time_start = time.time()
-
+    
     # Get Algorithm parameters
     max_iters = options['max_iter']
     tol = options['tol']
-    eps = options['epsilon_min']
-    gamma_k = options['gamma_init']
 
-    m = min(options['m'], len(x0)) 
 
     # Initialize numpy arrays to store values
     fx = np.zeros(max_iters)              # values of f(xk)       (1, max_iters)
@@ -33,19 +29,17 @@ def lbfgs(x0, problem, options, search):
     x_hist = np.zeros((len(x0), max_iters))   # (n, max_iters)
     alpha_hist = np.zeros(max_iters)  # (1, max_iters)
     
-    s = []
-    y = []
-
     x = x0.copy()
-
+    
     grad_0_norm = np.linalg.norm(problem.gradient(x))
-    output = "Failed. Maximum iterations reached."
-    hessian_0 = np.eye(len(x))
-
-    for itr in range(max_iters):
+    output = "Failed. Maximum iterations reached. \n"    
+    
+    for itr in range(options['max_iter']):
+        
         # Compute values at step itr (k)
         fx_k  = problem.function(x)
         grad_k = problem.gradient(x)
+        hessian_k = problem.hessian(x)
 
         # Store values
         fx[itr] = fx_k
@@ -58,55 +52,69 @@ def lbfgs(x0, problem, options, search):
 
         ## 1. Compute search direction. The hessian at time step k.
         ## Note: On newton method approximations -> hessiank NOT problem.hessian(x)
-
-        hessian_k = gamma_k * hessian_0
-
-        p_k = -two_loop_recursion(hessian_k, grad_k, s, y)
-
+        p_k = get_search_direction(grad_k, hessian_k, options)
+        
         # Check convergence
         if grad_k_norm < tol * max(grad_0_norm, 1):
-            output = "Converged. Gradient norm is below tolerance."
+            output = "Converged. Gradient norm is below tolerance. \n"
             break
 
-        # 2. Perform line search to find alpha
+        ## 2. Search step size
         alpha_k = search(x, problem, p_k, options)
         
+        # Store alpha
         alpha_hist[itr] = alpha_k
-
+        
         x = x + alpha_k * p_k
 
-        s_k = alpha_k * p_k
-        y_k = problem.gradient(x) - grad_k
-
-        if y_k @ s_k > eps * np.linalg.norm(y_k) * np.linalg.norm(s_k):
-            # Update memory
-            if len(s) >= m:
-                s.pop(0)
-                y.pop(0)
-
-            s.append(s_k)
-            y.append(y_k)
-
-        gamma_k = (s_k @ y_k) / (y_k @ y_k) if y_k @ y_k > 1e-15 else 1.0
         print(f"{'iter':>6} {'f':>9} {'||grad||':>9} {'alpha':>9}")
         print(f"{itr:6d} {fx_k:9.2e} {grad_k_norm:9.2e} {alpha_k:9.2e}")
-    print(output) 
+    print(output)
     return x, problem.function(x), itr, time.time() - time_start, output, grad_norm_hist
 
-def two_loop_recursion(H0_k, gradk, sks, yks):
 
-    q = gradk.copy()
-    m = len(sks)
-    p_l = np.zeros(m)
-    alpha = np.zeros(m)
+def get_search_direction(grad_k: np.ndarray, H_k: np.ndarray, options: dict)-> np.ndarray:
+    """ This function computes the search direction according to the algorithm of choice
+    
+    Parameters:
+    - gradk: gradient at time step k
+    - Hk: Hessian or approx (BFGS, LBFGS, DFP) at time step k
 
-    for l in range(m-1, -1, -1):
-        p_l[l] = 1/(yks[l].T @ sks[l])
-        alpha[l] = p_l[l] * (sks[l].T @ q)
-        q -= alpha[l] * yks[l]
+    Returns:
+    - pk: Search direction used for every iteration step"""
 
-    r = H0_k @ q
-    for j in range(m):
-        beta = p_l[j] * (yks[j].T @ r)
-        r += sks[j] * (alpha[j] - beta)
-    return r
+    ######## Implementation ########
+    j = 0
+    z = np.zeros_like(grad_k)
+    r = grad_k.copy()
+    d = -grad_k.copy()
+    j_max = len(grad_k) + 10 
+
+    while True:
+        if d.T @ H_k @ d <= 0:
+            if j == 0:
+                pk = -grad_k
+                return pk
+            else:
+                pk = z
+                return pk
+        else:
+            alpha_j = np.dot(r,r) / (d.T @ H_k @ d)
+            z1 = z + alpha_j * d
+            r1 = r + alpha_j * H_k @ d
+
+            if np.linalg.norm(r1) <= options['eta'] * np.linalg.norm(grad_k):
+                pk = z1  
+                return pk
+                
+            beta = np.dot(r1,r1) / np.dot(r,r)
+            d1 = -r1 + beta * d
+            d = d1
+            z = z1
+            r = r1
+            j = j + 1
+
+            if j > j_max:
+                print('did not find available direction in Newton_CG')
+                pk = z
+                return pk

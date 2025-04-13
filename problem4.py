@@ -10,6 +10,8 @@ from bfgs import bfgs
 from gradient_descent import gradient_descent
 from modified_newton import modified_newton
 from lbfgs import lbfgs
+from dfp import dfp
+from newton_cg import newton_cg
 
 prob = 'Problem4'
 
@@ -36,6 +38,8 @@ algorithms = [
     ('Modified Newton', modified_newton),
     ('BFGS', bfgs),
     ('L-BFGS', lbfgs),
+    ('DFP', dfp),
+    ('Newton CG', newton_cg)
 ]
 
 # Run the benchmark
