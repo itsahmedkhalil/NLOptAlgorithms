@@ -93,14 +93,7 @@ def plot_function_value(results, problem_name):
     plt.subplot(1, 2, 1)
     k = 0
     for name, result in results.items():
-        if k >= 2:
-            continue
-        iters = min(result['i'], max_iters_all)
-        x_vals = np.arange(iters+1)
-        y_vals = result['f'][:iters+1]
-
-        plt.plot(x_vals, y_vals, label=name, alpha=0.7, linewidth=2)
-        k += 1
+        plt.plot(result['f'][:max_iters_all], label=name, alpha=0.7)
     plt.yscale('log')
     plt.xlabel('Iterations')
     plt.ylabel(r'Function value, $f(x_k)$')
@@ -109,15 +102,8 @@ def plot_function_value(results, problem_name):
     plt.grid()
     
     plt.subplot(1, 2, 2)
-    k = 0
     for name, result in results.items():
-        if k >= 2:
-             continue
-        zoom_iters = min(result['i'], zoom_iterations)
-        x_vals = np.arange(zoom_iters+1)
-        y_vals = result['f'][:zoom_iters+1]
-        plt.plot(x_vals, y_vals, label=name, alpha=0.7, linewidth=2)
-        k += 1
+        plt.plot(result['f'][:zoom_iterations], label=name, alpha=0.7)
     plt.yscale('log')
     plt.xlabel('Iterations')
     plt.ylabel(r'Function value, $f(x_k)$')

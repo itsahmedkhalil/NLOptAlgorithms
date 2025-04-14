@@ -88,7 +88,9 @@ def lbfgs(x0, problem, options, search):
             y.append(y_k)
 
         gamma_k = (s_k @ y_k) / (y_k @ y_k) if y_k @ y_k > 1e-15 else 1.0
-
+        print(f"{'iter':>6} {'f':>9} {'||grad||':>9} {'alpha':>9}")
+        print(f"{itr:6d} {fx_k:9.2e} {grad_k_norm:9.2e} {alpha_k:9.2e}")
+    print(output) 
     return x_hist, fx, itr, time.time() - time_start, output, grad_norm_hist
 
 def two_loop_recursion(H0_k, gradk, sks, yks):
