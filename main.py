@@ -1,6 +1,8 @@
 import numpy as np
 
 from bfgs import bfgs
+from lbfgs import lbfgs
+from dfp import dfp
 from functions import *
 from gradient_descent import gradient_descent
 from modified_newton import modified_newton
@@ -239,6 +241,50 @@ for i in range(1, len(results.values())+1):
         'i': i_bfgsW,
         't': t_bfgsW,
         'o': o_bfgsW,
+        # 'h': h_bfgsW
+    }
+
+    # Run LBFGS with Armijo line search
+    x_lbfgs, f_lbfgs, i_lbfgs, t_lbfgs, o_lbfgs, h_lbfgs = lbfgs(x0, problemi, options, armijo_line_search)
+    results[f'problem{i}']['lbfgs'] = {
+        'x': x_lbfgs,
+        'f': f_lbfgs,
+        'i': i_lbfgs,
+        't': t_lbfgs,
+        'o': o_lbfgs,
+        # 'h': h_bfgs
+    }
+
+    # Run LBFGS with Wolfe line search
+    x_lbfgsW, f_lbfgsW, i_lbfgsW, t_lbfgsW, o_lbfgsW, h_lbfgsW = lbfgs(x0, problemi, options, wolfe_line_search)
+    results[f'problem{i}']['lbfgsW'] = {
+        'x': x_lbfgsW,
+        'f': f_lbfgsW,
+        'i': i_lbfgsW,
+        't': t_lbfgsW,
+        'o': o_lbfgsW,
+        # 'h': h_bfgsW
+    }
+
+        # Run LBFGS with Armijo line search
+    x_dfp, f_dfp, i_dfp, t_dfp, o_dfp, h_dfp = dfp(x0, problemi, options, armijo_line_search)
+    results[f'problem{i}']['dfp'] = {
+        'x': x_dfp,
+        'f': f_dfp,
+        'i': i_dfp,
+        't': t_dfp,
+        'o': o_dfp,
+        # 'h': h_bfgs
+    }
+
+    # Run LBFGS with Wolfe line search
+    x_dfpW, f_dfpW, i_dfpW, t_dfpW, o_dfpW, h_dfpW = lbfgs(x0, problemi, options, wolfe_line_search)
+    results[f'problem{i}']['dfpW'] = {
+        'x': x_dfpW,
+        'f': f_dfpW,
+        'i': i_dfpW,
+        't': t_dfpW,
+        'o': o_dfpW,
         # 'h': h_bfgsW
     }
 
