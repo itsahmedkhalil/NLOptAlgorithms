@@ -7,14 +7,14 @@ problem_scripts = [
     'problem2.py',
     'problem3.py',
     'problem4.py',
-    # 'problem5.py',
-    # 'problem6.py',
-    # 'problem7.py',
-    # 'problem8.py',
-    # 'problem9.py',
-    # 'problem10.py',
-    # 'problem11.py',
-    # 'problem12.py'
+    'problem5.py',
+    'problem6.py',
+    'problem7.py',
+    'problem8.py',
+    'problem9.py',
+    'problem10.py',
+    'problem11.py',
+    'problem12.py'
 ]
 
 

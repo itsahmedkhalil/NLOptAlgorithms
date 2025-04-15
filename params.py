@@ -11,14 +11,14 @@ def initialize() -> dict:
 
     options = {}
     # Set parameters
-    options['c1'] = 10e-4
+    options['c1'] = 1e-4
     options['c2'] = 0.9
     options['max_iter'] = 10000
-    options['epsilon_min'] = 10e-8
-    options['tol'] = 10e-8
+    options['epsilon_min'] = 1e-8
+    options['tol'] = 1e-8
     options['eta'] = 0.01
     options['tau'] = 0.4
-    options['beta'] = 10e-4
+    options['beta'] = 1e-4
     options['gamma_init'] = 1
     options['m'] = 10
     

@@ -20,7 +20,7 @@ def benchmark_algorithms(algorithms, problem, x0, options):
     for name, algorithm in algorithms:
         print(f"Running {name} with Armijo.\n")
         x, f, i, t, o, h = algorithm(x0, problem, options, armijo_line_search)
-        results[name] = {
+        results[name +'-a'] = {
             'x': x,
             'f': f,
             'i': i,
@@ -31,7 +31,7 @@ def benchmark_algorithms(algorithms, problem, x0, options):
 
         print(f"Running {name} with Wolfe.\n")
         x, f, i, t, o, h = algorithm(x0, problem, options, wolfe_line_search)
-        results[name + 'W'] = {
+        results[name + '-w'] = {
             'x': x,
             'f': f,
             'i': i,

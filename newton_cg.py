@@ -96,7 +96,7 @@ def get_search_direction(grad_k: np.ndarray, H_k: np.ndarray, options: dict)-> n
                 pk = -grad_k
                 return pk
             else:
-                pk = z
+                pk = z.copy()
                 return pk
         else:
             alpha_j = np.dot(r,r) / (d.T @ H_k @ d)
@@ -104,17 +104,17 @@ def get_search_direction(grad_k: np.ndarray, H_k: np.ndarray, options: dict)-> n
             r1 = r + alpha_j * H_k @ d
 
             if np.linalg.norm(r1) <= options['eta'] * np.linalg.norm(grad_k):
-                pk = z1  
+                pk = z1.copy()  
                 return pk
                 
             beta = np.dot(r1,r1) / np.dot(r,r)
             d1 = -r1 + beta * d
-            d = d1
-            z = z1
-            r = r1
+            d = d1.copy()
+            z = z1.copy()
+            r = r1.copy()
             j = j + 1
 
             if j > j_max:
                 print('did not find available direction in Newton_CG')
-                pk = z
+                pk = z.copy()
                 return pk
