@@ -18,7 +18,7 @@ class Quadratic:
         return self.Q
 
 class Quartic:
-    def __init__(self, Q: np.ndarray, sigma: float = 10e-4):
+    def __init__(self, Q: np.ndarray, sigma: float = 1e-4):
         assert Q.shape[0] == Q.shape[1], "Q must be a square matrix"
         self.Q = Q
         self.sigma = sigma
