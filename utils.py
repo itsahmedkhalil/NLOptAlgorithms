@@ -17,7 +17,7 @@ def plot_styles():
 
     line_styles = {
         'a':    '-',
-        'W':    '--'
+        'w':    '--'
     }
 
     return color_map, line_styles
@@ -67,17 +67,17 @@ def plot_gradient_norm(results, problem_name, plot_styles=plot_styles):
 
     # Find iteration limits
     max_iters_all = 0
-    max_iters_exc_gd = 0
+    max_iters_exc = 0
     for name, result in results.items():
         base_name, variant = parse_algorithm_name(name)
-        if base_name != 'Gradient Descent':
+        if base_name != 'GD':
             # exclude DFP only for problem 12 or problem 7
             if base_name != 'DFP' and (problem_name == 'Problem12' or problem_name == 'Problem7'):
-                max_iters_exc_gd = max(max_iters_exc_gd, result['i'])
+                max_iters_exc = max(max_iters_exc, result['i'])
         max_iters_all = max(max_iters_all, result['i'])
 
     # Zoomed-in iteration count
-    zoom_iterations = max(max_iters_exc_gd, 10)
+    zoom_iterations = max(max_iters_exc, 10)
     max_iters_all   = max(max_iters_all, 10)
 
     plt.figure(figsize=(10, 5))
@@ -147,16 +147,16 @@ def plot_function_value(results, problem_name, plot_styles=plot_styles):
     color_map, line_styles = plot_styles()
 
     max_iters_all = 0
-    max_iters_exc_gd = 0
+    max_iters_exc = 0
     for name, result in results.items():
         base_name, variant = parse_algorithm_name(name)
-        if base_name != 'Gradient Descent':
+        if base_name != 'GD':
             # exclude DFP only for problem 12 or problem 7
             if base_name != 'DFP' and (problem_name == 'Problem12' or problem_name == 'Problem7'):
-                max_iters_exc_gd = max(max_iters_exc_gd, result['i'])
+                max_iters_exc = max(max_iters_exc, result['i'])
         max_iters_all = max(max_iters_all, result['i'])
 
-    zoom_iterations = max(max_iters_exc_gd, 10)
+    zoom_iterations = max(max_iters_exc, 10)
     max_iters_all   = max(max_iters_all, 10)
 
     plt.figure(figsize=(10, 5))
@@ -224,11 +224,16 @@ def plot_time_iterations(results, problem_name, plot_styles=plot_styles):
     for name, result in results.items():
         base_name, variant = parse_algorithm_name(name)
         color = color_map.get(base_name, 'black')
-        ax_time.bar(name, result['t'], color=color)
+        # dashed bar for 'w' variant
+        if variant == 'w':
+            ax_time.bar(name, result['t'], color=color, hatch='//')
+        else:
+            ax_time.bar(name, result['t'], color=color)
 
     ax_time.set_title(f'{problem_name} - Total Time')
     ax_time.set_xlabel('Algorithms')
     ax_time.set_ylabel('Time (seconds)')
+    ax_time.set_yscale('log')
     ax_time.tick_params(axis='x', rotation=45)
 
     # Right subplot: Total iterations
@@ -236,11 +241,16 @@ def plot_time_iterations(results, problem_name, plot_styles=plot_styles):
     for name, result in results.items():
         base_name, variant = parse_algorithm_name(name)
         color = color_map.get(base_name, 'black')
-        ax_iter.bar(name, result['i'], color=color)
+        # dashed bar for 'w' variant
+        if variant == 'w':
+            ax_iter.bar(name, result['i'], color=color, hatch='//')
+        else:
+            ax_iter.bar(name, result['i'], color=color)
 
     ax_iter.set_title(f'{problem_name} - Total Iterations')
     ax_iter.set_xlabel('Algorithms')
     ax_iter.set_ylabel('Number of Iterations')
+    ax_iter.set_yscale('log')
     ax_iter.tick_params(axis='x', rotation=45)
 
     plt.tight_layout()

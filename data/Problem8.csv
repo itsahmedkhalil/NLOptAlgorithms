@@ -1,4 +1,4 @@
-Gradient Descent,Gradient DescentW,Modified Newton,Modified NewtonW,BFGS,BFGSW,L-BFGS,L-BFGSW,DFP,DFPW,Newton CG,Newton CGW
+GD-a,GD-w,MN-a,MN-w,BFGS-a,BFGS-w,L-BFGS-a,L-BFGS-w,DFP-a,DFP-w,NCG-a,NCG-w
 "[[-1.2        -1.05870438 -1.0081198  ...  0.          0.
    0.        ]
  [ 1.          1.05767168  0.99593024 ...  0.          0.
@@ -174,7 +174,7 @@ Gradient Descent,Gradient DescentW,Modified Newton,Modified NewtonW,BFGS,BFGSW,L
   0.        ]","[24.2        18.77359153  7.15386242 ...  0.          0.
   0.        ]"
 29,53,88,88,110,112,23,24,110,110,91,91
-0.015485763549804688,0.11527013778686523,0.5801963806152344,0.6390676498413086,0.1578235626220703,0.486971378326416,0.027577638626098633,0.044022560119628906,0.16237354278564453,0.3580167293548584,0.15108227729797363,0.23140907287597656
+0.04632234573364258,0.3465301990509033,1.5250914096832275,1.89389967918396,0.40938472747802734,1.070551872253418,0.06052446365356445,0.09891057014465332,0.3420720100402832,0.905829906463623,0.8094418048858643,0.8327212333679199
 "Converged. Gradient norm is below tolerance. 
 ","Converged. Gradient norm is below tolerance. 
 ",Converged. Gradient norm is below tolerance.,Converged. Gradient norm is below tolerance.,Converged. Gradient norm is below tolerance.,Converged. Gradient norm is below tolerance.,Converged. Gradient norm is below tolerance.,Converged. Gradient norm is below tolerance.,Converged. Gradient norm is below tolerance.,Converged. Gradient norm is below tolerance.,"Converged. Gradient norm is below tolerance. 

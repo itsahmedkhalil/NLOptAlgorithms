@@ -1106,7 +1106,7 @@ GD-a,GD-w,MN-a,MN-w,BFGS-a,BFGS-w,L-BFGS-a,L-BFGS-w,DFP-a,DFP-w,NCG-a,NCG-w
  0.00000000e+00 0.00000000e+00]","[8.81434727e+06 4.65350115e+03 7.46145612e-01 ... 0.00000000e+00
  0.00000000e+00 0.00000000e+00]"
 2352,2784,1,1,218,527,154,160,283,343,4,4
-9.656416416168213,21.459162950515747,1.1828110218048096,1.2013041973114014,8.40166687965393,23.58382511138916,0.5145156383514404,0.5373048782348633,12.78585934638977,16.023964643478394,0.5060091018676758,0.4763922691345215
+13.535297155380249,46.64836764335632,3.467223882675171,3.3933706283569336,17.418165922164917,51.24047112464905,1.0154690742492676,1.1451935768127441,27.62397837638855,32.521313428878784,0.6080832481384277,0.626762866973877
 "Converged. Gradient norm is below tolerance. 
 ","Converged. Gradient norm is below tolerance. 
 ",Converged. Gradient norm is below tolerance.,Converged. Gradient norm is below tolerance.,Converged. Gradient norm is below tolerance.,Converged. Gradient norm is below tolerance.,Converged. Gradient norm is below tolerance.,Converged. Gradient norm is below tolerance.,Converged. Gradient norm is below tolerance.,Converged. Gradient norm is below tolerance.,"Converged. Gradient norm is below tolerance. 
