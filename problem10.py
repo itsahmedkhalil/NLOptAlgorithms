@@ -4,7 +4,7 @@ import pandas as pd
 from functions import Exponential
 from params import initialize
 from benchmark import benchmark_algorithms
-from utils import plot_gradient_norm, plot_function_value
+from utils import plot_all
 
 from bfgs import bfgs
 from gradient_descent import gradient_descent
@@ -31,12 +31,12 @@ problem = Exponential(n)
 
 # Benchmarking algorithms
 algorithms = [
-    ('Gradient Descent', gradient_descent),
-    ('Modified Newton', modified_newton),
+    ('GD', gradient_descent),
+    ('MN', modified_newton),
     ('BFGS', bfgs),
     ('L-BFGS', lbfgs),
-    ('DFP',dfp),
-    ('Newton CG', newton_cg)
+    ('DFP', dfp),
+    ('NCG', newton_cg)
 ]
 
 # Run the benchmark
@@ -46,9 +46,5 @@ results = benchmark_algorithms(algorithms, problem, x0, options)
 df = pd.DataFrame(results)
 df.to_csv(f'data/{prob}.csv', index=False)
 
-# Plot gradient norm history
-plot_gradient_norm(results, prob)
-
-# Plot function value history to prove function value's sufficient 
-# decrease condition
-plot_function_value(results,prob)
+# plot the gradient norm history, the function value history, the total time, and the total iterations
+plot_all(results, prob)
