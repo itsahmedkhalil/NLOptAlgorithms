@@ -11,7 +11,7 @@ def initialize() -> dict:
 
     options = {}
     # Set parameters
-    options['c1'] = 10e-4
+    options['c1'] = 1e-4 == 10**(-4)
     options['c2'] = 0.9
     options['max_iter'] = 10000
     options['epsilon_min'] = 10e-8

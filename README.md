@@ -21,6 +21,8 @@ Plots for each problem will be saved in the `figures` directory. Data for each p
 
 ### Problem 1
 
+% import the data from data/Problem1.csv as a table in markdown:
+
 ![Problem 1 Gradient Norm](figures/Problem1_grad_norm.png)
 ![Problem 1 Function Value](figures/Problem1_function_value.png)
 ![Problem 1 Time and Iterations](figures/Problem1_time_iterations_side_by_side.png)
