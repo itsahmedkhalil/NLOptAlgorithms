@@ -4,7 +4,7 @@ import pandas as pd
 from functions import Quadratic
 from params import initialize
 from benchmark import benchmark_algorithms
-from utils import Q_generate, plot_all
+from utils import Q_generate, plot_all, save_data
 
 from bfgs import bfgs
 from gradient_descent import gradient_descent
@@ -45,15 +45,8 @@ algorithms = [
 # Run the benchmark
 results = benchmark_algorithms(algorithms, problem, x0, options)
 
-# Save results to csv file
-df = pd.DataFrame(results)
-df.to_csv(f'data/{prob}.csv', index=False)
+# Save the results
+save_data(results, prob)
 
-
-
-# # Convert df to markdown
-# df = df.astype(str)
-# df.to_markdown(f'data/{prob}.md')
-
-# # plot the gradient norm history, the function value history, the total time, and the total iterations
-# plot_all(results, prob)
+# Plot the gradient norm history, the function value history, the total time, and the total iterations
+plot_all(results, prob)

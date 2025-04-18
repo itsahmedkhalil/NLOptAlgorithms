@@ -64,7 +64,7 @@ def newton_cg(x0, problem, options, search):
         
         # Check convergence
         if grad_k_norm < tol * max(grad_0_norm, 1):
-            output = "Converged. Gradient norm is below tolerance. \n"
+            output = "Converged. Gradient norm is below tolerance."
             break
 
         ## 2. Search step size
