@@ -28,12 +28,16 @@ def bfgs(x0, problem, options, search):
     grad_norm_hist = np.zeros(max_iters)   # values of norm(\nablaf(xk))(1, max_iters)
     x_hist = np.zeros((len(x0), max_iters))   # (n, max_iters)
     alpha_hist = np.zeros(max_iters)  # (1, max_iters)
-    s = []               # (L-BFGS)
-    y = []               # (L-BFGS)
     
     x = x0.copy()
-    
+
+    f_evals = 0
+    g_evals = 0
+    h_evals = 0
+
     grad_0_norm = np.linalg.norm(problem.gradient(x))
+    g_evals += 1
+
     output = "Failed. Maximum iterations reached."     
     
     hessian_k = np.eye(len(x))
@@ -41,7 +45,9 @@ def bfgs(x0, problem, options, search):
     for itr in range(options['max_iter']):
         # Compute values at step itr (k)
         fx_k  = problem.function(x)
+        f_evals += 1
         grad_k = problem.gradient(x)
+        g_evals += 1
 
         # Store values
         fx[itr] = fx_k
@@ -52,8 +58,7 @@ def bfgs(x0, problem, options, search):
         grad_k_norm = np.linalg.norm(grad_k)
         grad_norm_hist[itr] = grad_k_norm
 
-        ## 1. Compute search direction. The hessian at time step k.
-        ## Note: On newton method approximations -> hessiank NOT problem.hessian(x)
+        ## 1. Compute search direction.
         p_k = get_search_direction(grad_k, hessian_k, options)
 
         # Check convergence
@@ -62,7 +67,7 @@ def bfgs(x0, problem, options, search):
             break
 
         ## 2. Search step size
-        alpha_k = search(x, problem, p_k, options)
+        alpha_k, f_evals, g_evals = search(x, problem, p_k, f_evals, g_evals, options)
         
         # Store alpha
         alpha_hist[itr] = alpha_k
@@ -71,6 +76,7 @@ def bfgs(x0, problem, options, search):
 
         s_k = alpha_k * p_k
         y_k = problem.gradient(x) - grad_k
+        g_evals += 1
 
         if y_k @ s_k > eps * np.linalg.norm(y_k) * np.linalg.norm(s_k):
             hessian_k = bfgs_update(s_k, y_k, hessian_k)
@@ -78,7 +84,7 @@ def bfgs(x0, problem, options, search):
         print(f"{'iter':>6} {'f':>9} {'||grad||':>9} {'alpha':>9}")
         print(f"{itr:6d} {fx_k:9.2e} {grad_k_norm:9.2e} {alpha_k:9.2e}")
     print(output)        
-    return x_hist, fx, itr, time.time() - time_start, output, grad_norm_hist
+    return x_hist, fx, itr, time.time() - time_start, output, grad_norm_hist, f_evals, g_evals, h_evals
 
 def get_search_direction(grad_k: np.ndarray, Hk: np.ndarray, options: dict)-> np.ndarray:
     """ This function computes the search direction according to the algorithm of choice

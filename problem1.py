@@ -49,5 +49,11 @@ results = benchmark_algorithms(algorithms, problem, x0, options)
 df = pd.DataFrame(results)
 df.to_csv(f'data/{prob}.csv', index=False)
 
-# plot the gradient norm history, the function value history, the total time, and the total iterations
-plot_all(results, prob)
+
+
+# # Convert df to markdown
+# df = df.astype(str)
+# df.to_markdown(f'data/{prob}.md')
+
+# # plot the gradient norm history, the function value history, the total time, and the total iterations
+# plot_all(results, prob)
