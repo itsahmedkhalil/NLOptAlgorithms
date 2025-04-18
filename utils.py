@@ -1,5 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
+import os
 
 def plot_styles():
     """
@@ -268,3 +270,48 @@ def plot_all(results, problem_name):
     plot_gradient_norm(results, problem_name)
     plot_function_value(results, problem_name)
     plot_time_iterations(results, problem_name)
+
+
+def save_data(results, prob):
+    # Save results to csv file
+    df = pd.DataFrame(results).T
+    df.to_csv(f'data/{prob}.csv', index=False)
+
+    df = df.drop(columns=['x', 'f', 'h'])
+    df.columns = ['Iters', 'Time', 'Convergence', 'Func Evals', 'Grad Evals', 'Hess Evals']
+
+    # save to markdown
+    df.to_markdown(f'data/{prob}.md')
+
+    # update README.md
+    update_readme("README.md", problem_ids=range(1, 13))
+
+def extract_table(md_path):
+    """Return the first markdown table found in a file."""
+    with open(md_path) as f:
+        lines = f.readlines()
+
+    table = []
+    for line in lines:
+        if "|" in line:
+            table.append(line)
+        elif table:
+            break
+    return ''.join(table)
+
+
+def update_readme(readme_path, problem_ids):
+    """Insert tables from Problem{n}.md files into README.md between markers."""
+    with open(readme_path) as f:
+        readme = f.read()
+
+    for pid in problem_ids:
+        start = f"<!-- BEGIN_PROBLEM_{pid}_TABLE -->"
+        end = f"<!-- END_PROBLEM_{pid}_TABLE -->"
+        table = extract_table(f"data/Problem{pid}.md")
+        readme = readme.replace(
+            f"{start}\n{end}", f"{start}\n{table}{end}"
+        )
+
+    with open(readme_path, 'w') as f:
+        f.write(readme)

@@ -31,15 +31,24 @@ def newton_cg(x0, problem, options, search):
     
     x = x0.copy()
     
+    f_evals = 0
+    g_evals = 0
+    h_evals = 0
+
     grad_0_norm = np.linalg.norm(problem.gradient(x))
+    g_evals += 1
+
     output = "Failed. Maximum iterations reached. \n"    
     
     for itr in range(options['max_iter']):
         
         # Compute values at step itr (k)
         fx_k  = problem.function(x)
+        f_evals += 1
         grad_k = problem.gradient(x)
+        g_evals += 1
         hessian_k = problem.hessian(x)
+        h_evals += 1
 
         # Store values
         fx[itr] = fx_k
@@ -50,17 +59,16 @@ def newton_cg(x0, problem, options, search):
         grad_k_norm = np.linalg.norm(grad_k)
         grad_norm_hist[itr] = grad_k_norm
 
-        ## 1. Compute search direction. The hessian at time step k.
-        ## Note: On newton method approximations -> hessiank NOT problem.hessian(x)
+        ## 1. Compute search direction.
         p_k = get_search_direction(grad_k, hessian_k, options)
         
         # Check convergence
         if grad_k_norm < tol * max(grad_0_norm, 1):
-            output = "Converged. Gradient norm is below tolerance. \n"
+            output = "Converged. Gradient norm is below tolerance."
             break
 
         ## 2. Search step size
-        alpha_k = search(x, problem, p_k, options)
+        alpha_k, f_evals, g_evals = search(x, problem, p_k, f_evals, g_evals, options)
         
         # Store alpha
         alpha_hist[itr] = alpha_k
@@ -70,7 +78,7 @@ def newton_cg(x0, problem, options, search):
         print(f"{'iter':>6} {'f':>9} {'||grad||':>9} {'alpha':>9}")
         print(f"{itr:6d} {fx_k:9.2e} {grad_k_norm:9.2e} {alpha_k:9.2e}")
     print(output)
-    return x, fx, itr, time.time() - time_start, output, grad_norm_hist
+    return x, fx, itr, time.time() - time_start, output, grad_norm_hist, f_evals, g_evals, h_evals
 
 
 def get_search_direction(grad_k: np.ndarray, H_k: np.ndarray, options: dict)-> np.ndarray:

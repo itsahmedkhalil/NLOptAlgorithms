@@ -1,10 +1,12 @@
 import numpy as np
 from typing import Callable
 
-def armijo_line_search(xk: np.ndarray,
-                       problem,
-                       pk: np.ndarray,
-                       options: dict) -> float:
+def armijo_line_search( xk: np.ndarray,
+                        problem,
+                        pk: np.ndarray,
+                        f_evals: int,
+                        g_evals: int,
+                        options: dict) -> float:
     """Armijo line search algorithm.
     
     Parameters:
@@ -26,17 +28,22 @@ def armijo_line_search(xk: np.ndarray,
     # Define just for readability
     f = problem.function
     fk = f(xk)
+    f_evals += 1
     grad_k = problem.gradient(xk)
-    
+    g_evals += 1
+
     while f(xk + alpha * pk) > fk + c1 * alpha * grad_k.T @ pk:
         alpha *= tau
+        f_evals += 1
     
-    return alpha
+    return alpha, f_evals, g_evals
 
-def wolfe_line_search(xk: np.ndarray,
-                       problem,
-                       pk: np.ndarray,
-                       options: dict) -> float:
+def wolfe_line_search(  xk: np.ndarray,
+                        problem,
+                        pk: np.ndarray,
+                        f_evals: int,
+                        g_evals: int,
+                        options: dict) -> float:
     """Wolfe line search algorithm.
     
     Parameters:
@@ -65,16 +72,22 @@ def wolfe_line_search(xk: np.ndarray,
     # Define phi(alpha) and its directional derivative phi'(alpha)
     phi = lambda alp: f(xk + alp * pk) 
     phi_prime = lambda alp: grad_f(xk + alp * pk).T  @ pk
+
+    phi_0 = phi(0)
+    phi_prime_0 = phi_prime(0)
     
     while True:
-
-        if phi(alpha) > phi(0) + c1 * alpha * phi_prime(0):
+        if phi(alpha) > phi_0 + c1 * alpha * phi_prime_0:
             alpha_u = alpha
+            f_evals += 1
+
         else:
-            if phi_prime(alpha) < c2 * phi_prime(0):
+            if phi_prime(alpha) < c2 * phi_prime_0:
                 alpha_l = alpha
+                g_evals += 1
             else:
-                return alpha
+                f_evals += 1
+                return alpha, f_evals, g_evals
 
         if alpha_u < np.inf:
             alpha = (alpha_l + alpha_u) / 2
