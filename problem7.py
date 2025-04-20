@@ -4,7 +4,7 @@ import pandas as pd
 from functions import Rosenbrock2D
 from params import initialize
 from benchmark import benchmark_algorithms
-from utils import plot_all
+from utils import plot_all, save_data
 
 from bfgs import bfgs
 from dfp import dfp
@@ -40,9 +40,8 @@ algorithms = [
 # Run the benchmark
 results = benchmark_algorithms(algorithms, problem, x0, options)
 
-# Save results to csv file
-df = pd.DataFrame(results)
-df.to_csv(f'data/{prob}.csv', index=False)
+# Save the results
+save_data(results, prob)
 
 # plot the gradient norm history, the function value history, the total time, and the total iterations
 plot_all(results, prob)

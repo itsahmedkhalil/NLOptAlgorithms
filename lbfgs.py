@@ -42,10 +42,16 @@ def lbfgs(x0, problem, options, search):
     output = "Failed. Maximum iterations reached."
     hessian_0 = np.eye(len(x))
 
+    f_evals = 0
+    g_evals = 0
+    h_evals = 0
+
     for itr in range(max_iters):
         # Compute values at step itr (k)
         fx_k  = problem.function(x)
+        f_evals += 1
         grad_k = problem.gradient(x)
+        g_evals += 1
 
         # Store values
         fx[itr] = fx_k
@@ -56,9 +62,7 @@ def lbfgs(x0, problem, options, search):
         grad_k_norm = np.linalg.norm(grad_k)
         grad_norm_hist[itr] = grad_k_norm
 
-        ## 1. Compute search direction. The hessian at time step k.
-        ## Note: On newton method approximations -> hessiank NOT problem.hessian(x)
-
+        ## 1. Compute search direction.
         hessian_k = gamma_k * hessian_0
 
         p_k = -two_loop_recursion(hessian_k, grad_k, s, y)
@@ -69,7 +73,7 @@ def lbfgs(x0, problem, options, search):
             break
 
         # 2. Perform line search to find alpha
-        alpha_k = search(x, problem, p_k, options)
+        alpha_k, f_evals, g_evals = search(x, problem, p_k, f_evals, g_evals, options)
         
         alpha_hist[itr] = alpha_k
 
@@ -77,6 +81,7 @@ def lbfgs(x0, problem, options, search):
 
         s_k = alpha_k * p_k
         y_k = problem.gradient(x) - grad_k
+        g_evals += 1
 
         if y_k @ s_k > eps * np.linalg.norm(y_k) * np.linalg.norm(s_k):
             # Update memory
@@ -91,7 +96,7 @@ def lbfgs(x0, problem, options, search):
         print(f"{'iter':>6} {'f':>9} {'||grad||':>9} {'alpha':>9}")
         print(f"{itr:6d} {fx_k:9.2e} {grad_k_norm:9.2e} {alpha_k:9.2e}")
     print(output) 
-    return x_hist, fx, itr, time.time() - time_start, output, grad_norm_hist
+    return x_hist, fx, itr, time.time() - time_start, output, grad_norm_hist, f_evals, g_evals, h_evals
 
 def two_loop_recursion(H0_k, gradk, sks, yks):
 

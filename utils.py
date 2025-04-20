@@ -1,5 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
+from pathlib import Path
+import re
 
 def plot_styles():
     """
@@ -268,3 +271,54 @@ def plot_all(results, problem_name):
     plot_gradient_norm(results, problem_name)
     plot_function_value(results, problem_name)
     plot_time_iterations(results, problem_name)
+
+
+def save_data(results, prob_id):
+    """Write results to CSV / markdown, then refresh the README."""
+    df = pd.DataFrame(results).T
+
+    df.to_csv(f"data/{prob_id}.csv", index=False)
+    df = df.drop(columns=['x', 'f', 'h'])
+    df.columns = ['Iters', 'Time', 'Convergence',
+                  'Func Evals', 'Grad Evals', 'Hess Evals']
+    df.to_markdown(f"data/{prob_id}.md",  index=True)
+
+    update_readme("README.md", prob_id)
+
+
+def extract_table(md_path: str) -> str:
+    """Return the *first* markdown table found in a file."""
+    with open(md_path, "r") as fh:
+        lines = fh.readlines()
+
+    tbl = []
+    for line in lines:
+        if "|" in line:
+            tbl.append(line)
+        elif tbl:           # we were in a table and hit a blank line
+            break
+    return "".join(tbl).rstrip() + "\n"     # keep a trailing newline
+
+def update_readme(readme_path: str, pid: int):
+    """Replace the block between the BEGIN/END markers for one problem."""
+    readme = Path(readme_path).read_text()
+
+    start = f"<!-- BEGIN_{pid}_TABLE -->"
+    end   = f"<!-- END_{pid}_TABLE -->"
+
+    pattern = re.compile(
+        rf"{re.escape(start)}.*?{re.escape(end)}",
+        flags=re.DOTALL,
+    )
+
+    table_md = extract_table(f"data/{pid}.md")
+    replacement = f"{start}\n{table_md}{end}"
+
+    # If the problem block already exists, overwrite it;
+    # otherwise, just append a new block at the end of the file.
+    if pattern.search(readme):
+        readme = pattern.sub(replacement, readme)
+    else:
+        readme = readme.rstrip() + "\n\n" + replacement
+
+    Path(readme_path).write_text(readme)
