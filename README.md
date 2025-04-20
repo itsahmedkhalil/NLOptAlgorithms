@@ -41,6 +41,11 @@ or run the main script to execute all problems:
 python run_all_problems.py
 ```
 
+To convert the markdown file to a PDF, use the following command:
+```bash
+pandoc README.md -o README.pdf -V geometry:margin=0.5in
+```
+
 ## Results
 
 Plots for each problem will be saved in the `figures` directory. Data for each problem will be saved in the `data` directory.
