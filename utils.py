@@ -1,7 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-import os
+from pathlib import Path
+import re
 
 def plot_styles():
     """
@@ -272,46 +273,52 @@ def plot_all(results, problem_name):
     plot_time_iterations(results, problem_name)
 
 
-def save_data(results, prob):
-    # Save results to csv file
+def save_data(results, prob_id):
+    """Write results to CSV / markdown, then refresh the README."""
     df = pd.DataFrame(results).T
-    df.to_csv(f'data/{prob}.csv', index=False)
 
+    df.to_csv(f"data/{prob_id}.csv", index=False)
     df = df.drop(columns=['x', 'f', 'h'])
-    df.columns = ['Iters', 'Time', 'Convergence', 'Func Evals', 'Grad Evals', 'Hess Evals']
+    df.columns = ['Iters', 'Time', 'Convergence',
+                  'Func Evals', 'Grad Evals', 'Hess Evals']
+    df.to_markdown(f"data/{prob_id}.md",  index=True)
 
-    # save to markdown
-    df.to_markdown(f'data/{prob}.md')
+    update_readme("README.md", prob_id)
 
-    # update README.md
-    update_readme("README.md", problem_ids=range(1, 13))
 
-def extract_table(md_path):
-    """Return the first markdown table found in a file."""
-    with open(md_path) as f:
-        lines = f.readlines()
+def extract_table(md_path: str) -> str:
+    """Return the *first* markdown table found in a file."""
+    with open(md_path, "r") as fh:
+        lines = fh.readlines()
 
-    table = []
+    tbl = []
     for line in lines:
         if "|" in line:
-            table.append(line)
-        elif table:
+            tbl.append(line)
+        elif tbl:           # we were in a table and hit a blank line
             break
-    return ''.join(table)
+    return "".join(tbl).rstrip() + "\n"     # keep a trailing newline
 
+def update_readme(readme_path: str, pid: int):
+    """Replace the block between the BEGIN/END markers for one problem."""
+    readme = Path(readme_path).read_text()
 
-def update_readme(readme_path, problem_ids):
-    """Insert tables from Problem{n}.md files into README.md between markers."""
-    with open(readme_path) as f:
-        readme = f.read()
+    start = f"<!-- BEGIN_{pid}_TABLE -->"
+    end   = f"<!-- END_{pid}_TABLE -->"
 
-    for pid in problem_ids:
-        start = f"<!-- BEGIN_PROBLEM_{pid}_TABLE -->"
-        end = f"<!-- END_PROBLEM_{pid}_TABLE -->"
-        table = extract_table(f"data/Problem{pid}.md")
-        readme = readme.replace(
-            f"{start}\n{end}", f"{start}\n{table}{end}"
-        )
+    pattern = re.compile(
+        rf"{re.escape(start)}.*?{re.escape(end)}",
+        flags=re.DOTALL,
+    )
 
-    with open(readme_path, 'w') as f:
-        f.write(readme)
+    table_md = extract_table(f"data/{pid}.md")
+    replacement = f"{start}\n{table_md}{end}"
+
+    # If the problem block already exists, overwrite it;
+    # otherwise, just append a new block at the end of the file.
+    if pattern.search(readme):
+        readme = pattern.sub(replacement, readme)
+    else:
+        readme = readme.rstrip() + "\n\n" + replacement
+
+    Path(readme_path).write_text(readme)
