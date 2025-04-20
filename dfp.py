@@ -106,7 +106,6 @@ def dfp_update(s_k, y_k, H_k):
     - H_kp1: Approximate Hessian Inverse at time step k + 1
     """
     rho_k = 1.0 / (y_k @ s_k)
-    I = np.eye(len(s_k))
-    H_kp1 = H_k + np.outer(s_k, s_k) * rho_k - (H_k @ np.outer(y_k, y_k) @ H_k) / (y_k @ H_k @ y_k)
+    H_kp1 = H_k  - (H_k @ np.outer(y_k, y_k) @ H_k) / (y_k @ H_k @ y_k) + np.outer(s_k, s_k) * rho_k 
     return H_kp1
 

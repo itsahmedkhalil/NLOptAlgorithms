@@ -13,11 +13,11 @@ def initialize() -> dict:
     # Set parameters
     options['c1'] = 1e-4
     options['c2'] = 0.9
-    options['max_iter'] = 10000
+    options['max_iter'] = 1000  # Iteration limit 1e3 according to project description
     options['epsilon_min'] = 1e-8
-    options['tol'] = 1e-8
+    options['tol'] = 1e-6      # Optimality tolerance 1e-6 according to project description
     options['eta'] = 0.01
-    options['tau'] = 0.4
+    options['tau'] = 0.9
     options['beta'] = 1e-4
     options['gamma_init'] = 1
     options['m'] = 10

@@ -23,13 +23,13 @@ np.random.seed(0)
 
 # Setup Problem 6
 # Quartic function 2
-# n = 4, sigma = 10e4
+# n = 4, sigma = 1e4
 # Starting point x0 = [cos(70), sin(70), cos(70), sin(70)]
 A = np.array([[5, 1, 0, 0.5],
               [1, 4, 0.5, 0],
               [0, 0.5, 3, 0],
               [0.5, 0, 0, 2]])
-sigma = 10e4
+sigma = 1e4
 x0 = np.array([cosd(70), sind(70), cosd(70), sind(70)])
 problem = Quartic(A, sigma)
 

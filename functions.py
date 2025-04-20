@@ -154,7 +154,6 @@ class Exponential:
 
         return H
 
-import numpy as np
 
 class Genhumps:
     def function(self, x: np.ndarray) -> float:

@@ -29,7 +29,7 @@ A = np.array([[5, 1, 0, 0.5],
               [1, 4, 0.5, 0],
               [0, 0.5, 3, 0],
               [0.5, 0, 0, 2]])
-sigma = 10e-4
+sigma = 1e-4
 x0 = np.array([cosd(70), sind(70), cosd(70), sind(70)])
 problem = Quartic(A, sigma)
 
