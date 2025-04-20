@@ -3,8 +3,8 @@ import pandas as pd
 
 from functions import Quartic
 from params import initialize
-from benchmark import benchmark_algorithms
-from utils import cosd, sind, plot_all, save_data
+from benchmark import *
+from utils import *
 
 from bfgs import bfgs
 from gradient_descent import gradient_descent
