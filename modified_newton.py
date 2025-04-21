@@ -25,7 +25,8 @@ def modified_newton(x0, problem, options, search):
     #fx = np.zeros(max_iters)              # values of f(xk)       (1, max_iters)
     fx = np.array([])
     grad = np.zeros((len(x0),max_iters))        # values of \nablaf(xk) (n, max_iters)
-    grad_norm_hist = np.zeros(max_iters)   # values of norm(\nablaf(xk))(1, max_iters)
+    # grad_norm_hist = np.zeros(max_iters)   # values of norm(\nablaf(xk))(1, max_iters)
+    grad_norm_hist = np.array([])   # values of norm(\nablaf(xk))(1, max_iters)
     x_hist = np.zeros((len(x0), max_iters))   # (n, max_iters)
     alpha_hist = np.zeros(max_iters)  # (1, max_iters)
 
@@ -57,7 +58,8 @@ def modified_newton(x0, problem, options, search):
         # Store values for information purposes
         x_hist[:,itr] = x
         grad_k_norm = np.linalg.norm(grad_k)
-        grad_norm_hist[itr] = grad_k_norm
+        #grad_norm_hist[itr] = grad_k_norm
+        grad_norm_hist = np.append(grad_norm_hist, grad_k_norm)
 
         ## 1. Compute search direction.
         p_k = get_search_direction(grad_k, hessian_k, options)

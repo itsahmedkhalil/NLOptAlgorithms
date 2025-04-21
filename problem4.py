@@ -57,5 +57,4 @@ if options['tau_list'].size > 0 or options['c2_list'].size > 0:
     df = pd.DataFrame(results_c2_tau)
     df.to_csv(f'data/{prob}_tau_c2.csv', index=False)
 
-    plot_function_value_c2_tau(results_c2_tau, prob)
-    plot_function_value_c2_tau_zoom(results_c2_tau, prob)
+    plot_all_c2_tau(results_c2_tau, prob)
