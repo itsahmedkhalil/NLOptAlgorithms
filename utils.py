@@ -139,7 +139,7 @@ def plot_gradient_norm(results, problem_name, plot_styles=plot_styles):
 
     plt.tight_layout()
     plt.savefig(f'figures/{problem_name}_grad_norm.png', dpi=150)
-    plt.show()
+    #plt.show()
 
 
 def plot_function_value(results, problem_name, plot_styles=plot_styles):
@@ -178,7 +178,7 @@ def plot_function_value(results, problem_name, plot_styles=plot_styles):
                  linestyle=ls,
                  linewidth=lw,
                  alpha=0.8)
-    plt.yscale('log')
+    plt.yscale('symlog')
     plt.xlabel('Iterations')
     plt.ylabel(r'Function Value, $f(x_k)$')
     plt.title(f'{problem_name} - Function Value (All Iterations)')
@@ -200,7 +200,7 @@ def plot_function_value(results, problem_name, plot_styles=plot_styles):
                  linestyle=ls,
                  linewidth=lw,
                  alpha=0.8)
-    plt.yscale('log')
+    plt.yscale('symlog')
     plt.xlabel('Iterations')
     plt.ylabel(r'Function Value, $f(x_k)$')
     plt.title(f'{problem_name} - Function Value (First {zoom_iterations} Iters)')
@@ -209,7 +209,7 @@ def plot_function_value(results, problem_name, plot_styles=plot_styles):
 
     plt.tight_layout()
     plt.savefig(f'figures/{problem_name}_function_value.png', dpi=150)
-    plt.show()
+    #plt.show()
 
 
 def plot_time_iterations(results, problem_name, plot_styles=plot_styles):
@@ -258,7 +258,7 @@ def plot_time_iterations(results, problem_name, plot_styles=plot_styles):
 
     plt.tight_layout()
     plt.savefig(f'figures/{problem_name}_time_iterations_side_by_side.png', dpi=150)
-    plt.show()
+    #plt.show()
 
 def plot_all(results, problem_name):
     """
@@ -322,3 +322,190 @@ def update_readme(readme_path: str, pid: int):
         readme = readme.rstrip() + "\n\n" + replacement
 
     Path(readme_path).write_text(readme)
+
+
+def plot_function_value_c2_tau(results, problem_name):
+    """
+    Plot the function value history for the different c2 and tau.
+    """
+    algorithm_names = ['GD', 'MN', 'BFGS', 'L-BFGS', 'DFP', 'NCG']
+    plt.figure(figsize=(14, 7))
+
+    
+    for i, algo_name in enumerate(algorithm_names):
+        plt.subplot(2,3,i+1)
+        plt.title(algo_name)
+
+        max_iter = 10
+        for name, result in results.items():
+            
+            if name.startswith(algo_name):
+                # wolf use -- line style, armijo use - line style
+                if '-w' in name:
+                    line_style = '--'
+                    lable_name = name.split('_')[1]+'_w'
+                elif '-a' in name:
+                    line_style = '-'
+                    lable_name = name.split('_')[1]+'_a'
+                
+
+                plt.plot(result['f'], label=lable_name, linestyle=line_style, alpha=0.5)
+                max_iter = max(max_iter, result['i'])
+
+        plt.yscale('symlog')
+        plt.ylabel(r'Function Value, $f(x_k)$')
+        plt.xlabel('Iterations')
+        plt.legend(loc='best', fontsize=6)
+        plt.grid(True)
+
+        if max_iter <= 10:
+            plt.xlim(0, 10)
+            plt.xticks(range(0, 11, 2))
+        else:
+            plt.xlim(0, max_iter)
+ 
+    plt.suptitle(f'{problem_name} - Function Value with Different c2 and tau', fontsize=12)
+    plt.tight_layout()
+    plt.savefig(f'figures/{problem_name}_c2_tau_fx.png', dpi=150)
+    #plt.show()
+
+# only show the first 10 iterations value
+def plot_function_value_c2_tau_zoom(results, problem_name):
+    """
+    Plot the function value history for the different c2 and tau.
+    """
+    algorithm_names = ['GD', 'MN', 'BFGS', 'L-BFGS', 'DFP', 'NCG']
+    plt.figure(figsize=(14,7))
+
+    
+    for i, algo_name in enumerate(algorithm_names):
+        plt.subplot(2,3,i+1)
+        plt.title(algo_name)
+
+        for name, result in results.items():
+            
+            if name.startswith(algo_name):
+                # wolf use -- line style, armijo use - line style
+                if '-w' in name:
+                    line_style = '--'
+                    lable_name = name.split('_')[1]+'_w'
+                elif '-a' in name:
+                    line_style = '-'
+                    lable_name = name.split('_')[1]+'_a'
+                
+
+                plt.plot(result['f'], label=lable_name, linestyle=line_style, alpha=0.5)
+
+        plt.yscale('symlog')
+        plt.ylabel(r'Function Value, $f(x_k)$')
+        plt.xlabel('Iterations')
+        plt.legend(loc='best', fontsize=6)
+        plt.grid(True)
+        plt.xlim(0, 10)
+        plt.xticks(range(0, 11, 2))
+
+ 
+    plt.suptitle(f'{problem_name} - Function Value with Different c2 and tau (zoom)', fontsize=12)
+    plt.tight_layout()
+    plt.savefig(f'figures/{problem_name}_c2_tau_fx_zoom.png', dpi=150)
+    #plt.show()
+
+
+def plot_gradient_norm_c2_tau(results, problem_name):
+    """
+    Plot the function value history for the different c2 and tau.
+    """
+    algorithm_names = ['GD', 'MN', 'BFGS', 'L-BFGS', 'DFP', 'NCG']
+    plt.figure(figsize=(14, 7))
+
+    
+    for i, algo_name in enumerate(algorithm_names):
+        plt.subplot(2,3,i+1)
+        plt.title(algo_name)
+
+        max_iter = 10
+        for name, result in results.items():
+            
+            if name.startswith(algo_name):
+                # wolf use -- line style, armijo use - line style
+                if '-w' in name:
+                    line_style = '--'
+                    lable_name = name.split('_')[1]+'_w'
+                elif '-a' in name:
+                    line_style = '-'
+                    lable_name = name.split('_')[1]+'_a'
+                
+
+                plt.plot(result['h'], label=lable_name, linestyle=line_style, alpha=0.5)
+                max_iter = max(max_iter, result['i'])
+
+        plt.yscale('log')
+        plt.ylabel(r'Gradient Norm, $\|\nabla f(x_k)\|$')
+        plt.xlabel('Iterations')
+        plt.legend(loc='best', fontsize=6)
+        plt.grid(True)
+
+        if max_iter <= 10:
+            plt.xlim(0, 10)
+            plt.xticks(range(0, 11, 2))
+        else:
+            plt.xlim(0, max_iter)
+ 
+    plt.suptitle(f'{problem_name} -  Gradient Norm with Different c2 and tau', fontsize=12)
+    plt.tight_layout()
+    plt.savefig(f'figures/{problem_name}_c2_tau_grad.png', dpi=150)
+    #plt.show()
+
+# only show the first 10 iterations value
+def plot_gradient_norm_c2_tau_zoom(results, problem_name):
+    """
+    Plot the function value history for the different c2 and tau.
+    """
+    algorithm_names = ['GD', 'MN', 'BFGS', 'L-BFGS', 'DFP', 'NCG']
+    plt.figure(figsize=(14,7))
+
+    
+    for i, algo_name in enumerate(algorithm_names):
+        plt.subplot(2,3,i+1)
+        plt.title(algo_name)
+
+        for name, result in results.items():
+            
+            if name.startswith(algo_name):
+                # wolf use -- line style, armijo use - line style
+                if '-w' in name:
+                    line_style = '--'
+                    lable_name = name.split('_')[1]+'_w'
+                elif '-a' in name:
+                    line_style = '-'
+                    lable_name = name.split('_')[1]+'_a'
+                
+
+                plt.plot(result['h'], label=lable_name, linestyle=line_style, alpha=0.5)
+
+        plt.yscale('log')
+        plt.ylabel(r'Gradient Norm, $\|\nabla f(x_k)\|$')
+        plt.xlabel('Iterations')
+        plt.legend(loc='best', fontsize=6)
+        plt.grid(True)
+        plt.xlim(0, 10)
+        plt.xticks(range(0, 11, 2))
+
+ 
+    plt.suptitle(f'{problem_name} - Gradient Norm with Different c2 and tau (zoom)', fontsize=12)
+    plt.tight_layout()
+    plt.savefig(f'figures/{problem_name}_c2_tau_grad_zoom.png', dpi=150)
+    #plt.show()
+
+def plot_all_c2_tau(results, problem_name):
+    """
+    Plot all relevant information for the algorithms:
+      - Gradient Norm
+      - Function Value
+      - Total Time
+      - Total Iterations
+    """
+    plot_gradient_norm_c2_tau(results, problem_name)
+    plot_gradient_norm_c2_tau_zoom(results, problem_name)
+    plot_function_value_c2_tau(results, problem_name)
+    plot_function_value_c2_tau_zoom(results, problem_name)

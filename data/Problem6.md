@@ -1,14 +1,14 @@
-|          |   Iters |       Time | Convergence                                  |   Func Evals |   Grad Evals |   Hess Evals |
-|:---------|--------:|-----------:|:---------------------------------------------|-------------:|-------------:|-------------:|
-| GD-a     |       8 | 0.00157738 | Converged. Gradient norm is below tolerance. |          102 |           17 |            0 |
-| GD-w     |       7 | 0.00156951 | Converged. Gradient norm is below tolerance. |          132 |            8 |            0 |
-| MN-a     |      31 | 0.0182481  | Converged. Gradient norm is below tolerance. |           63 |           64 |           32 |
-| MN-w     |      31 | 0.0174356  | Converged. Gradient norm is below tolerance. |           63 |           33 |           32 |
-| BFGS-a   |      26 | 0.00375772 | Converged. Gradient norm is below tolerance. |          113 |           80 |            0 |
-| BFGS-w   |      24 | 0.00390363 | Converged. Gradient norm is below tolerance. |          129 |           50 |            0 |
-| L-BFGS-a |      15 | 0.00227237 | Converged. Gradient norm is below tolerance. |           47 |           46 |            0 |
-| L-BFGS-w |      14 | 0.00236773 | Converged. Gradient norm is below tolerance. |           50 |           29 |            0 |
-| DFP-a    |     142 | 0.0166104  | Converged. Gradient norm is below tolerance. |          344 |          428 |            0 |
-| DFP-w    |     393 | 0.0511451  | Converged. Gradient norm is below tolerance. |          867 |          788 |            0 |
-| NCG-a    |      57 | 0.0229957  | Converged. Gradient norm is below tolerance. |          611 |          116 |           58 |
-| NCG-w    |      59 | 0.0253308  | Converged. Gradient norm is below tolerance. |          898 |           61 |           60 |
+|          |   Iters |        Time | Convergence                                  |   Func Evals |   Grad Evals |   Hess Evals |
+|:---------|--------:|------------:|:---------------------------------------------|-------------:|-------------:|-------------:|
+| GD-a     |      42 | 0.021486    | Converged. Gradient norm is below tolerance. |         3167 |           85 |            0 |
+| GD-w     |       6 | 0.000741959 | Converged. Gradient norm is below tolerance. |           94 |            7 |            0 |
+| MN-a     |      31 | 0.00917602  | Converged. Gradient norm is below tolerance. |           63 |           64 |           32 |
+| MN-w     |      31 | 0.00824499  | Converged. Gradient norm is below tolerance. |           63 |           33 |           32 |
+| BFGS-a   |      12 | 0.00365806  | Converged. Gradient norm is below tolerance. |          458 |           38 |            0 |
+| BFGS-w   |      24 | 0.00236273  | Converged. Gradient norm is below tolerance. |          111 |           50 |            0 |
+| L-BFGS-a |      14 | 0.00208092  | Converged. Gradient norm is below tolerance. |          145 |           43 |            0 |
+| L-BFGS-w |      15 | 0.00170803  | Converged. Gradient norm is below tolerance. |           49 |           31 |            0 |
+| DFP-a    |      14 | 0.00365424  | Converged. Gradient norm is below tolerance. |          451 |           44 |            0 |
+| DFP-w    |      65 | 0.00540709  | Converged. Gradient norm is below tolerance. |          192 |          132 |            0 |
+| NCG-a    |     999 | 2.69485     | Failed. Maximum iterations reached.          |       363679 |         2001 |         1000 |
+| NCG-w    |     999 | 0.642192    | Failed. Maximum iterations reached.          |        63186 |         1001 |         1000 |

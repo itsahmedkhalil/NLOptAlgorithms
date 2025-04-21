@@ -1,3 +1,4 @@
+import numpy as np
 def initialize() -> dict:
 
     """This function sets some default values for parameters 
@@ -19,5 +20,11 @@ def initialize() -> dict:
     options['beta'] = 1e-4
     options['gamma_init'] = 1
     options['m'] = 10
+    options['max_time'] = 15
+
+
+    # leave np.array([]) if you don't want to perform multiple values
+    options['tau_list'] = np.array([0.1, 0.3, 0.9]) # 0 < tau < 1
+    options['c2_list'] = np.array([0.5, 0.6, 0.7, 0.8, 0.9])  # 0 < c1 < c2 < 1
     
     return options

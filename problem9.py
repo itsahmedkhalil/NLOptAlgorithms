@@ -3,8 +3,8 @@ import pandas as pd
 
 from functions import DataFit
 from params import initialize
-from benchmark import benchmark_algorithms
-from utils import plot_all, save_data
+from benchmark import *
+from utils import *
 
 from bfgs import bfgs
 from gradient_descent import gradient_descent
@@ -46,3 +46,11 @@ save_data(results, prob)
 
 # plot the gradient norm history, the function value history, the total time, and the total iterations
 plot_all(results, prob)
+
+# for multiple tau values(armijo) and multiple c2 values(wolfe)
+if options['tau_list'].size > 0 or options['c2_list'].size > 0:
+    results_c2_tau = benchmark_algorithms_c2_tau(algorithms, problem, x0, options)
+    df = pd.DataFrame(results_c2_tau)
+    df.to_csv(f'data/{prob}_tau_c2.csv', index=False)
+
+    plot_all_c2_tau(results_c2_tau, prob)
