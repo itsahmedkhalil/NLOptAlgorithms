@@ -20,6 +20,7 @@ def initialize() -> dict:
     options['beta'] = 1e-4
     options['gamma_init'] = 1
     options['m'] = 10
+    options['max_time'] = 15
 
 
     # leave np.array([]) if you don't want to perform multiple values

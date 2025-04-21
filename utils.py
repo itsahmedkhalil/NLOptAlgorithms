@@ -178,7 +178,7 @@ def plot_function_value(results, problem_name, plot_styles=plot_styles):
                  linestyle=ls,
                  linewidth=lw,
                  alpha=0.8)
-    plt.yscale('log')
+    plt.yscale('symlog')
     plt.xlabel('Iterations')
     plt.ylabel(r'Function Value, $f(x_k)$')
     plt.title(f'{problem_name} - Function Value (All Iterations)')
@@ -200,7 +200,7 @@ def plot_function_value(results, problem_name, plot_styles=plot_styles):
                  linestyle=ls,
                  linewidth=lw,
                  alpha=0.8)
-    plt.yscale('log')
+    plt.yscale('symlog')
     plt.xlabel('Iterations')
     plt.ylabel(r'Function Value, $f(x_k)$')
     plt.title(f'{problem_name} - Function Value (First {zoom_iterations} Iters)')

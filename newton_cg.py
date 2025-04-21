@@ -23,7 +23,8 @@ def newton_cg(x0, problem, options, search):
 
 
     # Initialize numpy arrays to store values
-    fx = np.zeros(max_iters)              # values of f(xk)       (1, max_iters)
+    #fx = np.zeros(max_iters)              # values of f(xk)       (1, max_iters)
+    fx = np.array([])
     grad = np.zeros((len(x0),max_iters))        # values of \nablaf(xk) (n, max_iters)
     grad_norm_hist = np.zeros(max_iters)   # values of norm(\nablaf(xk))(1, max_iters)
     x_hist = np.zeros((len(x0), max_iters))   # (n, max_iters)
@@ -51,7 +52,8 @@ def newton_cg(x0, problem, options, search):
         h_evals += 1
 
         # Store values
-        fx[itr] = fx_k
+        # fx[itr] = fx_k
+        fx = np.append(fx, fx_k)  # Append the function value
         grad[:, itr] = grad_k
 
         # Store values for information purposes
