@@ -1,6 +1,22 @@
-# Algorithms for Non-Linear Programming
+# Algorithms for Solving Non-Linear Optimization Problems
 
-## This repository contains implementations of various algorithms for solving non-linear programming problems.
+## This repository contains implementations of various algorithms for solving non-linear optimization problems
+
+The algorithms implemented include:
+
+- Gradient Descent (GD)
+- Modified Newton (MN)
+- Broyden-Fletcher-Goldfarb-Shanno (BFGS)
+- Limited-memory BFGS (L-BFGS)
+- Davidon-Fletcher-Powell (DFP)
+- Newton Conjugate Gradient (NCG)
+
+Each algorithm has two variants for the line search:
+
+- Armijo Line Search (a)
+- Wolfe Line Search (w)
+
+Each algorithm and line search combination is tested on 12 different optimization problems.
 
 ### Getting Started
 
