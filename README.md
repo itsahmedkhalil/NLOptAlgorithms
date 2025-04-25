@@ -43,7 +43,7 @@ python run_all_problems.py
 
 To convert the markdown file to a PDF, use the following command:
 ```bash
-pandoc README.md -o README.pdf -V geometry:margin=0.5in
+pandoc README.md -o results.pdf -V geometry:margin=0.5in
 ```
 
 ## Results
